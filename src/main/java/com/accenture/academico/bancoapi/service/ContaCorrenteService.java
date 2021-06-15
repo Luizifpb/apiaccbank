@@ -174,7 +174,7 @@ public class ContaCorrenteService {
         }
     }
 
-    public String transferenciaEntreContasCorrentesOutroBanco(long idCCI, double valorTransferencia, long idCCEXterno) throws ContaCorrenteNotFoundException
+    public String transferenciaEntreContasCIOutroBanco(long idCCI, double valorTransferencia, long idCCPEXterno) throws ContaCorrenteNotFoundException
     {
 
         // validacao de existencia de conta

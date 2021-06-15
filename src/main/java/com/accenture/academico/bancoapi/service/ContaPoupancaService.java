@@ -173,7 +173,7 @@ public class ContaPoupancaService {
         }
     }
 
-    public String transferenciaEntreContasPoupancasOutroBanco(long idCPI, double valorTransferencia, long idCPEXterno) throws ContaCorrenteNotFoundException
+    public String transferenciaEntreContasPIOutroBanco(long idCPI, double valorTransferencia, long idCPCEXterno) throws ContaCorrenteNotFoundException
     {
 
         // validacao de existencia de conta

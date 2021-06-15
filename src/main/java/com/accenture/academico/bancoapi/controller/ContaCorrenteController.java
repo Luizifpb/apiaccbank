@@ -98,12 +98,12 @@ public class ContaCorrenteController {
         }
     }
 
-    @PutMapping("/transferenciaentrecontascorrentesoutrobanco/{idCCI}/{valor}/{idCCExterno}")
-    public ResponseEntity<Double> transferenciaEntreContasCorrentesOutroBanco(@PathVariable("idCCI") long idCCI, @PathVariable("valor") double valor, @PathVariable("idCExterno") long idCCExterno)
+    @PutMapping("/transferenciaentrecontascioutrobanco/{idCCI}/{valor}/{idCCPExterno}")
+    public ResponseEntity<Double> transferenciaEntreContasCIOutroBanco(@PathVariable("idCCI") long idCCI, @PathVariable("valor") double valor, @PathVariable("idCCPExterno") long idCCPExterno)
     {
         try {
-            var transferenciaEntreContasCorrentesOutroBanco = contaCorrenteService.transferenciaEntreContasCorrentesOutroBanco(idCCI, valor, idCCExterno);
-            return new ResponseEntity(transferenciaEntreContasCorrentesOutroBanco, HttpStatus.OK);
+            var transferenciaEntreContasCIOutroBanco = contaCorrenteService.transferenciaEntreContasCIOutroBanco(idCCI, valor, idCCPExterno);
+            return new ResponseEntity(transferenciaEntreContasCIOutroBanco, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         }

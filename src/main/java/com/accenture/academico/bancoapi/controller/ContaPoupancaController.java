@@ -101,12 +101,12 @@ public class ContaPoupancaController {
         }
     }
 
-    @PutMapping("/transferenciaentrecontaspoupancasoutrobanco/{idCPI}/{valor}/{idCPExterno}")
-    public ResponseEntity<Double> transferenciaEntreContasPoupancasOutroBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPExterno") long idCPExterno)
+    @PutMapping("/transferenciaentrecontaspioutrobanco/{idCPI}/{valor}/{idCPCExterno}")
+    public ResponseEntity<Double> transferenciaEntreContasPIOutroBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPCExterno") long idCPCExterno)
     {
         try {
-            var transferenciaEntreContasPoupancasOutroBanco = contaPoupancaService.transferenciaEntreContasPoupancasOutroBanco(idCPI, valor, idCPExterno);
-            return new ResponseEntity(transferenciaEntreContasPoupancasOutroBanco, HttpStatus.OK);
+            var transferenciaEntreContasPIOutroBanco = contaPoupancaService.transferenciaEntreContasPIOutroBanco(idCPI, valor, idCPCExterno);
+            return new ResponseEntity(transferenciaEntreContasPIOutroBanco, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         }
