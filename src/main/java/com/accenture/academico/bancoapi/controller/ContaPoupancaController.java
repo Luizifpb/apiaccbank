@@ -112,4 +112,15 @@ public class ContaPoupancaController {
         }
     }
 
+    @PutMapping("/transferenciacontaspoupancasparacontascorrentes/{idCPI}/{valor}/{idCCD}")
+    public ResponseEntity<Double> transferenciaContasPoupancasParaContasCorrentes(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCCD") long idCCD)
+    {
+        try {
+            var transferenciaContasPoupancasParaContasCorrentes = contaPoupancaService.transferenciaContasPoupancasParaContasCorrentes(idCPI, valor, idCCD);
+            return new ResponseEntity(transferenciaContasPoupancasParaContasCorrentes, HttpStatus.OK);
+        } catch (ContaCorrenteNotFoundException e){
+            return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

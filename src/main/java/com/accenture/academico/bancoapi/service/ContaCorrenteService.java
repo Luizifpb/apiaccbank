@@ -3,10 +3,12 @@ package com.accenture.academico.bancoapi.service;
 import com.accenture.academico.bancoapi.entity.Agencia;
 import com.accenture.academico.bancoapi.entity.Cliente;
 import com.accenture.academico.bancoapi.entity.ContaCorrente;
+import com.accenture.academico.bancoapi.entity.ContaPoupanca;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.model.ContaCorrenteModel;
 import com.accenture.academico.bancoapi.repository.ContaCorrenteRepository;
+import com.accenture.academico.bancoapi.repository.ContaPoupancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class ContaCorrenteService {
     ClienteService clienteService;
     @Autowired
     AgenciaService agenciaService;
+    @Autowired
+    ContaPoupancaRepository contaPoupancaRepository;
 
     public List<ContaCorrente> getAllContasCorrentes()
     {
@@ -186,6 +190,52 @@ public class ContaCorrenteService {
         var saqueContaCorrenteInicial = contaCorrenteInicialSaldo - valorTransferencia;
 
         if (contaCorrenteInicialSaldo >= valorTransferencia) {
+            // saque na conta inicial
+            var contaCorrenteIId = contaCorrenteRepository.getById(idCCI).getId();
+            var agenciaContaCorrenteI = contaCorrenteRepository.getById(idCCI).getAgencia();
+            var numeroContaCorrenteI = contaCorrenteRepository.getById(idCCI).getContaCorrenteNumero();
+            var clienteContaCorrenteI = contaCorrenteRepository.getById(idCCI).getCliente();
+
+            var contaCorrenteI = new ContaCorrente(contaCorrenteIId, agenciaContaCorrenteI, numeroContaCorrenteI, saqueContaCorrenteInicial, clienteContaCorrenteI);
+
+            contaCorrenteRepository.save(contaCorrenteI);
+
+            return "Transferência efetuada";
+        } else {
+            return "Valor inválido para transferência";
+        }
+    }
+
+    public String transferenciaContasCorrentesParaContasPoupancas(long idCCI, double valorTransferencia, long idCPD) throws ContaCorrenteNotFoundException
+    {
+
+        // validacao de existencia de conta
+        var contaCorrenteCIOptional = contaCorrenteRepository.findById(idCCI);
+        var contaPoupancaCDOptional = contaPoupancaRepository.findById(idCPD);
+        if(contaCorrenteCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()){
+            throw new ContaCorrenteNotFoundException("Conta não encontrada.");
+        }
+
+        // pegar saldo das contas
+        var contaCorrenteInicialSaldo = contaCorrenteRepository.findById(idCCI).get().getContaCorrenteSaldo();
+        var contaPoupancaDestinoSaldo = contaPoupancaRepository.findById(idCPD).get().getContaPoupancaSaldo();
+
+        // calculos para operacao
+        var depositoContaPoupancaDestino = contaPoupancaDestinoSaldo + valorTransferencia;
+        var saqueContaCorrenteInicial = contaCorrenteInicialSaldo - valorTransferencia;
+
+
+        if (contaCorrenteInicialSaldo >= valorTransferencia) {
+            // depósito na conta destino
+            var contaPoupancaDId = contaPoupancaRepository.getById(idCPD).getId();
+            var agenciaContaPoupancaD = contaPoupancaRepository.getById(idCPD).getAgencia();
+            var numeroContaPoupancaD = contaPoupancaRepository.getById(idCPD).getContaPoupancaNumero();
+            var clienteContaPoupancaD = contaPoupancaRepository.getById(idCPD).getCliente();
+
+            var contaPoupancaD = new ContaPoupanca(contaPoupancaDId, agenciaContaPoupancaD, numeroContaPoupancaD, depositoContaPoupancaDestino, clienteContaPoupancaD);
+
+            contaPoupancaRepository.save(contaPoupancaD);
+
             // saque na conta inicial
             var contaCorrenteIId = contaCorrenteRepository.getById(idCCI).getId();
             var agenciaContaCorrenteI = contaCorrenteRepository.getById(idCCI).getAgencia();

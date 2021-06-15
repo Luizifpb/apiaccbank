@@ -108,4 +108,15 @@ public class ContaCorrenteController {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/transferenciacontascorrentesparacontaspoupancas/{idCCI}/{valor}/{idCPD}")
+    public ResponseEntity<Double> transferenciaContasCorrentesParaContasPoupancas(@PathVariable("idCCI") long idCCI, @PathVariable("valor") double valor, @PathVariable("idCPD") long idCPD)
+    {
+        try {
+            var transferenciaContasCorrentesParaContasPoupancas = contaCorrenteService.transferenciaContasCorrentesParaContasPoupancas(idCCI, valor, idCPD);
+            return new ResponseEntity(transferenciaContasCorrentesParaContasPoupancas, HttpStatus.OK);
+        } catch (ContaCorrenteNotFoundException e){
+            return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }
