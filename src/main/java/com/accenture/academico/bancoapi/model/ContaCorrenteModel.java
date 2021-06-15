@@ -1,0 +1,19 @@
+package com.accenture.academico.bancoapi.model;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonSerialize
+public class ContaCorrenteModel {
+
+    private AgenciaModelId agenciaModelId;
+    private String contaCorrenteNumero;
+    private double contaCorrenteSaldo;
+
+    private ClienteModelId clienteModelId;
+}
