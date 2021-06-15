@@ -1,6 +1,5 @@
 package com.accenture.academico.bancoapi.controller;
 
-import com.accenture.academico.bancoapi.entity.Cliente;
 import com.accenture.academico.bancoapi.entity.ExtratoContaCorrente;
 import com.accenture.academico.bancoapi.service.ExtratoContaCorrenteService;
 import lombok.RequiredArgsConstructor;

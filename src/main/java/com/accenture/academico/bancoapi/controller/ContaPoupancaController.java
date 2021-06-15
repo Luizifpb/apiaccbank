@@ -1,15 +1,12 @@
 package com.accenture.academico.bancoapi.controller;
 
-import com.accenture.academico.bancoapi.entity.ContaCorrente;
 import com.accenture.academico.bancoapi.entity.ContaPoupanca;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
 import com.accenture.academico.bancoapi.exception.ClienteNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaPoupancaNotFoundException;
-import com.accenture.academico.bancoapi.model.ContaCorrenteModel;
 import com.accenture.academico.bancoapi.model.ContaPoupancaModel;
 import com.accenture.academico.bancoapi.model.ErrorModel;
-import com.accenture.academico.bancoapi.service.ContaCorrenteService;
 import com.accenture.academico.bancoapi.service.ContaPoupancaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

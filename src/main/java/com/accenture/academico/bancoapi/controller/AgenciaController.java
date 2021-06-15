@@ -1,20 +1,15 @@
 package com.accenture.academico.bancoapi.controller;
 
 import com.accenture.academico.bancoapi.entity.Agencia;
-import com.accenture.academico.bancoapi.entity.Cliente;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
-import com.accenture.academico.bancoapi.exception.ClienteNotFoundException;
-import com.accenture.academico.bancoapi.model.ClienteModel;
 import com.accenture.academico.bancoapi.model.ErrorModel;
 import com.accenture.academico.bancoapi.service.AgenciaService;
-import com.accenture.academico.bancoapi.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
