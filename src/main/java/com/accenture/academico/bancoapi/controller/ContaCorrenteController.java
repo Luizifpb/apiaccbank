@@ -43,8 +43,8 @@ public class ContaCorrenteController {
         public ResponseEntity<Integer> deleteContaCorrente(@PathVariable("id") long id)
         {
             try {
-                var delete = contaCorrenteService.delete(id);
-                return new ResponseEntity(delete, HttpStatus.OK);
+                contaCorrenteService.deleteContaCorrente(id);
+                return new ResponseEntity(HttpStatus.OK);
             } catch (ContaCorrenteNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
             }

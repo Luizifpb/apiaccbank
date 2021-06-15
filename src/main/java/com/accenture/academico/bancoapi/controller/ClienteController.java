@@ -44,8 +44,8 @@ public class ClienteController {
     public ResponseEntity<Integer> deleteCliente(@PathVariable("id") long id)
     {
         try {
-            var delete = clienteService.delete(id);
-            return new ResponseEntity<>(delete, HttpStatus.OK);
+            clienteService.delete(id);
+            return new ResponseEntity(HttpStatus.OK);
         } catch (ClienteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         }

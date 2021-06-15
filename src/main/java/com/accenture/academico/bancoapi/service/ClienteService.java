@@ -49,13 +49,12 @@ public class ClienteService {
         return clienteRetorno;
     }
     //deleting a specific record
-    public int delete(long id) throws ClienteNotFoundException
+    public void delete(long id) throws ClienteNotFoundException
     {
         var clienteRetorno = clienteRepository.findById(id);
         if(clienteRetorno.isEmpty()){
             throw new ClienteNotFoundException("Cliente não encontrado.");
         }
         clienteRepository.deleteById(id);
-        return 200;
     }
 }

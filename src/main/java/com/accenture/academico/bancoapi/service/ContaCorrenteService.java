@@ -1,17 +1,17 @@
 package com.accenture.academico.bancoapi.service;
 
-import com.accenture.academico.bancoapi.entity.Agencia;
-import com.accenture.academico.bancoapi.entity.Cliente;
-import com.accenture.academico.bancoapi.entity.ContaCorrente;
-import com.accenture.academico.bancoapi.entity.ContaPoupanca;
+import com.accenture.academico.bancoapi.entity.*;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.model.ContaCorrenteModel;
 import com.accenture.academico.bancoapi.repository.ContaCorrenteRepository;
 import com.accenture.academico.bancoapi.repository.ContaPoupancaRepository;
+import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
+import com.accenture.academico.bancoapi.repository.ExtratoContaPoupancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +25,10 @@ public class ContaCorrenteService {
     AgenciaService agenciaService;
     @Autowired
     ContaPoupancaRepository contaPoupancaRepository;
+    @Autowired
+    ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
+    @Autowired
+    ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
 
     public List<ContaCorrente> getAllContasCorrentes()
     {
@@ -59,7 +63,7 @@ public class ContaCorrenteService {
         return contaCorrenteRetorno;
     }
 
-    public int delete(long id) throws ContaCorrenteNotFoundException
+    public void deleteContaCorrente(long id) throws ContaCorrenteNotFoundException
     {
         // validacao de existencia de conta
         var contaCorrenteRetorno = contaCorrenteRepository.findById(id);
@@ -67,7 +71,6 @@ public class ContaCorrenteService {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
         contaCorrenteRepository.deleteById(id);
-        return 200;
     }
 
     public String saqueContaCorrente(long id, double valorSaque) throws ContaCorrenteNotFoundException
@@ -93,6 +96,11 @@ public class ContaCorrenteService {
             var contaCorrente = new ContaCorrente(contaCorrenteId, agenciaContaCorrente, numeroContaCorrente, resultadoSaque, clienteContaCorrente);
 
             contaCorrenteRepository.save(contaCorrente);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Saque", valorSaque, contaCorrente);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
+
             return "Saque efetuado";
         } else {
             return "Saldo insuficiente";
@@ -122,6 +130,10 @@ public class ContaCorrenteService {
             var contaCorrente = new ContaCorrente(contaCorrenteId, agenciaContaCorrente, numeroContaCorrente, resultadoDeposito, clienteContaCorrente);
 
             contaCorrenteRepository.save(contaCorrente);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Depósito", valorDeposito, contaCorrente);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
             return "Depósito efetuado";
         } else {
             return "Valor inválido para depósito";
@@ -158,6 +170,10 @@ public class ContaCorrenteService {
 
             contaCorrenteRepository.save(contaCorrenteD);
 
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Recebida", valorTransferencia, contaCorrenteD);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
+
             // saque na conta inicial
             var contaCorrenteIId = contaCorrenteRepository.getById(idCCI).getId();
             var agenciaContaCorrenteI = contaCorrenteRepository.getById(idCCI).getAgencia();
@@ -167,6 +183,10 @@ public class ContaCorrenteService {
             var contaCorrenteI = new ContaCorrente(contaCorrenteIId, agenciaContaCorrenteI, numeroContaCorrenteI, saqueContaCorrenteInicial, clienteContaCorrenteI);
 
             contaCorrenteRepository.save(contaCorrenteI);
+
+            data = LocalDateTime.now();
+            extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Realizada", valorTransferencia, contaCorrenteI);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
 
             return "Transferência efetuada";
         } else {
@@ -199,6 +219,10 @@ public class ContaCorrenteService {
             var contaCorrenteI = new ContaCorrente(contaCorrenteIId, agenciaContaCorrenteI, numeroContaCorrenteI, saqueContaCorrenteInicial, clienteContaCorrenteI);
 
             contaCorrenteRepository.save(contaCorrenteI);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Realizada", valorTransferencia, contaCorrenteI);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
 
             return "Transferência efetuada";
         } else {
@@ -236,6 +260,10 @@ public class ContaCorrenteService {
 
             contaPoupancaRepository.save(contaPoupancaD);
 
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Recebida", valorTransferencia, contaPoupancaD);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+
             // saque na conta inicial
             var contaCorrenteIId = contaCorrenteRepository.getById(idCCI).getId();
             var agenciaContaCorrenteI = contaCorrenteRepository.getById(idCCI).getAgencia();
@@ -245,6 +273,10 @@ public class ContaCorrenteService {
             var contaCorrenteI = new ContaCorrente(contaCorrenteIId, agenciaContaCorrenteI, numeroContaCorrenteI, saqueContaCorrenteInicial, clienteContaCorrenteI);
 
             contaCorrenteRepository.save(contaCorrenteI);
+
+            data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Realizada", valorTransferencia, contaCorrenteI);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
 
             return "Transferência efetuada";
         } else {

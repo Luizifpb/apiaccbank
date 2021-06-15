@@ -17,6 +17,7 @@ public class ContaCorrente {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "agencia_id")
     private Agencia agencia;
 
     @Column(unique = true, nullable = false)
@@ -26,6 +27,7 @@ public class ContaCorrente {
     private double contaCorrenteSaldo;
 
     @OneToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
 }

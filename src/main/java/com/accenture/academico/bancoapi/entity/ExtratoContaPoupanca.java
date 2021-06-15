@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,8 +19,8 @@ public class ExtratoContaPoupanca {
     private Long id;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataHoraMovimento;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
+    private LocalDateTime dataHoraMovimento;
 
     @Column(nullable = false)
     private String operacao;
@@ -28,6 +28,7 @@ public class ExtratoContaPoupanca {
     @Column(nullable = false)
     private double valorOperacao;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "conta_poupanca_id")
     private ContaPoupanca contaPoupanca;
 }

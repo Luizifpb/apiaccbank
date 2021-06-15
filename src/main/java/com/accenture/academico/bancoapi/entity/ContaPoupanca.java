@@ -17,6 +17,7 @@ public class ContaPoupanca {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "agencia_id")
     private Agencia agencia;
 
     @Column(unique = true, nullable = false)
@@ -25,7 +26,8 @@ public class ContaPoupanca {
     @Column(nullable = false)
     private double contaPoupancaSaldo;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
 }

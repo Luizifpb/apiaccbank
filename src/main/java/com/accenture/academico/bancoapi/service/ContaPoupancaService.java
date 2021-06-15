@@ -1,18 +1,18 @@
 package com.accenture.academico.bancoapi.service;
 
-import com.accenture.academico.bancoapi.entity.Agencia;
-import com.accenture.academico.bancoapi.entity.Cliente;
-import com.accenture.academico.bancoapi.entity.ContaCorrente;
-import com.accenture.academico.bancoapi.entity.ContaPoupanca;
+import com.accenture.academico.bancoapi.entity.*;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaPoupancaNotFoundException;
 import com.accenture.academico.bancoapi.model.ContaPoupancaModel;
 import com.accenture.academico.bancoapi.repository.ContaCorrenteRepository;
 import com.accenture.academico.bancoapi.repository.ContaPoupancaRepository;
+import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
+import com.accenture.academico.bancoapi.repository.ExtratoContaPoupancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +26,10 @@ public class ContaPoupancaService {
     AgenciaService agenciaService;
     @Autowired
     ContaCorrenteRepository contaCorrenteRepository;
+    @Autowired
+    ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
+    @Autowired
+    ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
 
     public List<ContaPoupanca> getAllContasPoupancas()
     {
@@ -59,14 +63,13 @@ public class ContaPoupancaService {
         return contaPoupancaRetorno;
     }
 
-    public int delete(long id) throws ContaPoupancaNotFoundException
+    public void deleteContaPoupanca(long id) throws ContaPoupancaNotFoundException
     {
         var contaPoupancaRetorno = contaPoupancaRepository.findById(id);
         if(contaPoupancaRetorno.isEmpty()){
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
         contaPoupancaRepository.deleteById(id);
-        return 200;
     }
 
     public String saqueContaPoupanca(long id, double valorSaque) throws ContaPoupancaNotFoundException
@@ -92,6 +95,10 @@ public class ContaPoupancaService {
             var contaPoupanca = new ContaPoupanca(contaPoupancaId, agenciaContaPoupanca, numeroContaPoupanca, resultadoSaque, clienteContaPoupanca);
 
             contaPoupancaRepository.save(contaPoupanca);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Saque", valorSaque, contaPoupanca);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
             return "Saque efetuado";
         } else {
             return "Saldo insuficiente";
@@ -121,6 +128,10 @@ public class ContaPoupancaService {
             var contaPoupanca = new ContaPoupanca(contaPoupancaId, agenciaContaPoupanca, numeroContaPoupanca, resultadoDeposito, clienteContaPoupanca);
 
             contaPoupancaRepository.save(contaPoupanca);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Depósito", valorDeposito, contaPoupanca);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
             return "Depósito efetuado";
         } else {
             return "Valor inválido para depósito";
@@ -157,6 +168,10 @@ public class ContaPoupancaService {
 
             contaPoupancaRepository.save(contaPoupancaD);
 
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Recebida", valorTransferencia, contaPoupancaD);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+
             // saque na conta inicial
             var contaPoupancaIId = contaPoupancaRepository.getById(idCPI).getId();
             var agenciaContaPoupancaI = contaPoupancaRepository.getById(idCPI).getAgencia();
@@ -166,6 +181,10 @@ public class ContaPoupancaService {
             var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
 
             contaPoupancaRepository.save(contaPoupancaI);
+
+            data = LocalDateTime.now();
+            extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
 
             return "Transferência efetuada";
         } else {
@@ -198,6 +217,10 @@ public class ContaPoupancaService {
             var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
 
             contaPoupancaRepository.save(contaPoupancaI);
+
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
 
             return "Transferência efetuada";
         } else {
@@ -235,6 +258,10 @@ public class ContaPoupancaService {
 
             contaCorrenteRepository.save(contaCorrenteD);
 
+            LocalDateTime data = LocalDateTime.now();
+            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Recebida", valorTransferencia, contaCorrenteD);
+            extratoContaCorrenteRepository.save(extratoContaCorrente);
+
             // saque na conta inicial
             var contaPoupancaIId = contaPoupancaRepository.getById(idCPI).getId();
             var agenciaContaPoupancaI = contaPoupancaRepository.getById(idCPI).getAgencia();
@@ -244,6 +271,10 @@ public class ContaPoupancaService {
             var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
 
             contaPoupancaRepository.save(contaPoupancaI);
+
+            data = LocalDateTime.now();
+            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
+            extratoContaPoupancaRepository.save(extratoContaPoupanca);
 
             return "Transferência efetuada";
         } else {
