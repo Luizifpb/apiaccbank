@@ -1,12 +1,12 @@
 package com.accenture.academico.bancoapi.controller;
 
+import com.accenture.academico.bancoapi.entity.ContaCorrente;
 import com.accenture.academico.bancoapi.entity.ExtratoContaCorrente;
 import com.accenture.academico.bancoapi.entity.ExtratoContaPoupanca;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.model.ErrorModel;
 import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
-import com.accenture.academico.bancoapi.service.ExtratoContaCorrenteService;
-import com.accenture.academico.bancoapi.service.ExtratoContaPoupancaService;
+import com.accenture.academico.bancoapi.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +27,47 @@ public class ExtratoContaCorrenteController {
     ExtratoContaPoupancaService extratoContaPoupancaService;
     @Autowired
     private ExtratoContaCorrenteRepository listarextrato;
+    @Autowired
+    private ClienteService clienteService;
+    @Autowired
+    private ContaCorrenteService contaCorrenteService;
+    @Autowired
+    private ContaPoupancaService contaPoupancaService;
 
     @GetMapping("/listarextrato/{id}")
     public ModelAndView listarextrato(@PathVariable("id") long id) {
 
-        List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
-        List<ExtratoContaPoupanca> lista2 = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
-
         ModelAndView modelAndView = new ModelAndView("listarextrato");
-        modelAndView.addObject("listarextratocontacorrente", lista);
-        modelAndView.addObject("listarextratocontapoupanca", lista2);
+        try{
+        List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+            modelAndView.addObject("listarextratocontacorrente", lista);
+        }catch (Exception e){
+            e.getMessage();
+        }
+        try {
+            List<ExtratoContaPoupanca> lista2 = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
+            modelAndView.addObject("listarextratocontapoupanca", lista2);
+        } catch (Exception e){
+            e.getMessage();
+        }
+        try{
+            String cliente = clienteService.getClienteById(id).getNomeCliente();
+            modelAndView.addObject("nomecliente", cliente);
+        }catch (Exception e) {
+            e.getMessage();
+        }
+        try{
+            double saldocontacorrente = contaCorrenteService.getSaldoContaCorrenteByIdCliente(id);
+            modelAndView.addObject("saldocontacorrente", saldocontacorrente);
+        }catch (Exception e) {
+            e.getMessage();
+        }
+        try{
+            double saldocontapoupanca = contaPoupancaService.getSaldoContaPoupancaByIdCliente(id);
+            modelAndView.addObject("saldocontapoupanca", saldocontapoupanca);
+        }catch (Exception e) {
+            e.getMessage();
+        }
 
         return modelAndView;
     }

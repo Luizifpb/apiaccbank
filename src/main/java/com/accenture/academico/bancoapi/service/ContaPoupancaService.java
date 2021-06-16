@@ -50,6 +50,17 @@ public class ContaPoupancaService {
         return contaPoupancaRetorno.get();
     }
 
+    public double getSaldoContaPoupancaByIdCliente(long id) throws ContaCorrenteNotFoundException
+    {
+        // validacao de existencia de conta
+        var getSaldoContaPoupancaByIdCliente = getAllContasPoupancas().stream()
+                .filter(conta -> conta.getCliente().getId() == id).findFirst().get();
+
+        var saldo = getSaldoContaPoupancaByIdCliente.getContaPoupancaSaldo();
+
+        return saldo;
+    }
+
     public ContaPoupanca saveOrUpdate(ContaPoupancaModel contaPoupancaModel) throws AgenciaNotFoundException
     {
         var clienteRetorno = clienteService.getClienteById(contaPoupancaModel.getClienteModelId().getId());

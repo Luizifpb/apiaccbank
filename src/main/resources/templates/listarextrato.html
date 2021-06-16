@@ -37,10 +37,11 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a href="http://www.google.com" target="_blank">Site</a></li>
-                        <li><a href="http://www.facebook.com" target="_blank">Facebook</a></li>
-                        <li><a href="http://www.youtube.com" target="_blank">YouTube</a></li>
-                        <li><a href="http://github.com" target="_blank">Github</a></li>
+                        <li><a href="#" target="_blank">Saque</a></li>
+                        <li><a href="#" target="_blank">Depósito</a></li>
+                        <li><a href="#" target="_blank">Transferência Conta Corrente ACC Bank</a></li>
+                        <li><a href="#" target="_blank">Transferência Poupanca ACC Bank</a></li>
+                        <li><a href="#" target="_blank">Transferência conta outro banco</a></li>
                     </ul>
                 </li>
             </ul>
@@ -50,7 +51,16 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>Extrato Conta Corrente</h1>
+        <h3>Olá, <span th:text="${nomecliente}"></span></h3>
+        <h5>Saldo em Conta Corrente: <span th:text="${#numbers.formatCurrency(saldocontacorrente)}"></span></h5>
+        <h5>Saldo em Conta Poupança: <span th:text="${#numbers.formatCurrency(saldocontapoupanca)}"></span></h5>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <h4>Extrato Conta Corrente</h4>
     </div>
 
     <table class="table table-striped table-bordered">
@@ -74,7 +84,7 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>Extrato Conta Poupança</h1>
+        <h4>Extrato Conta Poupança</h4>
     </div>
 
     <table class="table table-striped table-bordered">

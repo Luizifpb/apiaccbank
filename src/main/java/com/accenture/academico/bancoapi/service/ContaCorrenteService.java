@@ -47,6 +47,17 @@ public class ContaCorrenteService {
         return contaCorrenteRetorno.get();
     }
 
+    public double getSaldoContaCorrenteByIdCliente(long id) throws ContaCorrenteNotFoundException
+    {
+        // validacao de existencia de conta
+        var getSaldoContaCorrenteByIdCliente = getAllContasCorrentes().stream()
+                .filter(conta -> conta.getCliente().getId() == id).findFirst().get();
+
+        var saldo = getSaldoContaCorrenteByIdCliente.getContaCorrenteSaldo();
+
+        return saldo;
+    }
+
     public ContaCorrente saveOrUpdate(ContaCorrenteModel contaCorrenteModel) throws AgenciaNotFoundException
     {
         var clienteRetorno = clienteService.getClienteById(contaCorrenteModel.getClienteModelId().getId());
