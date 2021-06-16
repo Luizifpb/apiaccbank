@@ -1,6 +1,9 @@
 package com.accenture.academico.bancoapi.service;
 
-import com.accenture.academico.bancoapi.entity.*;
+import com.accenture.academico.bancoapi.entity.Agencia;
+import com.accenture.academico.bancoapi.entity.Cliente;
+import com.accenture.academico.bancoapi.entity.ContaPoupanca;
+import com.accenture.academico.bancoapi.entity.ExtratoContaPoupanca;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.exception.ContaPoupancaNotFoundException;
