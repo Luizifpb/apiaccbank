@@ -74,7 +74,6 @@ public class ContaPoupancaService {
 
     public String saqueContaPoupanca(long id, double valorSaque) throws ContaPoupancaNotFoundException
     {
-
         // validacao de existencia de conta
         var contaPoupancaOptional = contaPoupancaRepository.findById(id);
         if(contaPoupancaOptional.isEmpty()){
@@ -87,18 +86,7 @@ public class ContaPoupancaService {
 
         if (contaPoupancaSaldo >= valorSaque) {
             // saque na conta destino
-            var contaPoupancaId = contaPoupancaRepository.getById(id).getId();
-            var agenciaContaPoupanca = contaPoupancaRepository.getById(id).getAgencia();
-            var numeroContaPoupanca = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
-            var clienteContaPoupanca = contaPoupancaRepository.getById(id).getCliente();
-
-            var contaPoupanca = new ContaPoupanca(contaPoupancaId, agenciaContaPoupanca, numeroContaPoupanca, resultadoSaque, clienteContaPoupanca);
-
-            contaPoupancaRepository.save(contaPoupanca);
-
-            LocalDateTime data = LocalDateTime.now();
-            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Saque", valorSaque, contaPoupanca);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+            operacaoContaPoupanca(id, resultadoSaque, valorSaque, "Saque");
             return "Saque efetuado";
         } else {
             return "Saldo insuficiente";
@@ -120,18 +108,8 @@ public class ContaPoupancaService {
 
         if (valorDeposito > 0) {
             // depósito na conta
-            var contaPoupancaId = contaPoupancaRepository.getById(id).getId();
-            var agenciaContaPoupanca = contaPoupancaRepository.getById(id).getAgencia();
-            var numeroContaPoupanca = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
-            var clienteContaPoupanca = contaPoupancaRepository.getById(id).getCliente();
+            operacaoContaPoupanca(id, resultadoDeposito, valorDeposito, "Depósito");
 
-            var contaPoupanca = new ContaPoupanca(contaPoupancaId, agenciaContaPoupanca, numeroContaPoupanca, resultadoDeposito, clienteContaPoupanca);
-
-            contaPoupancaRepository.save(contaPoupanca);
-
-            LocalDateTime data = LocalDateTime.now();
-            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Depósito", valorDeposito, contaPoupanca);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
             return "Depósito efetuado";
         } else {
             return "Valor inválido para depósito";
@@ -149,8 +127,8 @@ public class ContaPoupancaService {
         }
 
         // pegar saldo das contas
-        var contaPoupancaInicialSaldo = contaPoupancaRepository.findById(idCPI).get().getContaPoupancaSaldo();
-        var contaPoupancaDestinoSaldo = contaPoupancaRepository.findById(idCPD).get().getContaPoupancaSaldo();
+        var contaPoupancaInicialSaldo = contaPoupancaCIOptional.get().getContaPoupancaSaldo();
+        var contaPoupancaDestinoSaldo = contaPoupancaCDOptional.get().getContaPoupancaSaldo();
 
         // calculos para operacao
         var depositoContaPoupancaDestino = contaPoupancaDestinoSaldo + valorTransferencia;
@@ -158,33 +136,11 @@ public class ContaPoupancaService {
 
 
         if (contaPoupancaInicialSaldo >= valorTransferencia) {
-            // depósito na conta destino
-            var contaPoupancaDId = contaPoupancaRepository.getById(idCPD).getId();
-            var agenciaContaPoupancaD = contaPoupancaRepository.getById(idCPD).getAgencia();
-            var numeroContaPoupancaD = contaPoupancaRepository.getById(idCPD).getContaPoupancaNumero();
-            var clienteContaPoupancaD = contaPoupancaRepository.getById(idCPD).getCliente();
-
-            var contaPoupancaD = new ContaPoupanca(contaPoupancaDId, agenciaContaPoupancaD, numeroContaPoupancaD, depositoContaPoupancaDestino, clienteContaPoupancaD);
-
-            contaPoupancaRepository.save(contaPoupancaD);
-
-            LocalDateTime data = LocalDateTime.now();
-            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Recebida", valorTransferencia, contaPoupancaD);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
-
             // saque na conta inicial
-            var contaPoupancaIId = contaPoupancaRepository.getById(idCPI).getId();
-            var agenciaContaPoupancaI = contaPoupancaRepository.getById(idCPI).getAgencia();
-            var numeroContaPoupancaI = contaPoupancaRepository.getById(idCPI).getContaPoupancaNumero();
-            var clienteContaPoupancaI = contaPoupancaRepository.getById(idCPI).getCliente();
+            operacaoContaPoupanca(idCPI, saqueContaPoupancaInicial, valorTransferencia, "Transferência Realizada");
 
-            var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
-
-            contaPoupancaRepository.save(contaPoupancaI);
-
-            data = LocalDateTime.now();
-            extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+            // depósito na conta destino
+            operacaoContaPoupanca(idCPD, depositoContaPoupancaDestino, valorTransferencia, "Transferência Recebida");
 
             return "Transferência efetuada";
         } else {
@@ -209,18 +165,7 @@ public class ContaPoupancaService {
 
         if (contaPoupancaInicialSaldo >= valorTransferencia) {
             // saque na conta inicial
-            var contaPoupancaIId = contaPoupancaRepository.getById(idCPI).getId();
-            var agenciaContaPoupancaI = contaPoupancaRepository.getById(idCPI).getAgencia();
-            var numeroContaPoupancaI = contaPoupancaRepository.getById(idCPI).getContaPoupancaNumero();
-            var clienteContaPoupancaI = contaPoupancaRepository.getById(idCPI).getCliente();
-
-            var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
-
-            contaPoupancaRepository.save(contaPoupancaI);
-
-            LocalDateTime data = LocalDateTime.now();
-            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+            operacaoContaPoupanca(idCPI, saqueContaPoupancaInicial, valorTransferencia, "Transferência Realizada");
 
             return "Transferência efetuada";
         } else {
@@ -228,19 +173,19 @@ public class ContaPoupancaService {
         }
     }
 
-    public String transferenciaContasPoupancasParaContasCorrentes(long idCPI, double valorTransferencia, long idCPD) throws ContaPoupancaNotFoundException
+    public String transferenciaContasPoupancasParaContasCorrentes(long idCPI, double valorTransferencia, long idCCD) throws ContaPoupancaNotFoundException
     {
 
         // validacao de existencia de conta
         var contaPoupancaCIOptional = contaPoupancaRepository.findById(idCPI);
-        var contaCorrenteCDOptional = contaCorrenteRepository.findById(idCPD);
+        var contaCorrenteCDOptional = contaCorrenteRepository.findById(idCCD);
         if(contaPoupancaCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()){
             throw new ContaPoupancaNotFoundException("Conta não encontrada.");
         }
 
         // pegar saldo das contas
-        var contaPoupancaInicialSaldo = contaPoupancaRepository.findById(idCPI).get().getContaPoupancaSaldo();
-        var contaCorrenteDestinoSaldo = contaCorrenteRepository.findById(idCPD).get().getContaCorrenteSaldo();
+        var contaPoupancaInicialSaldo = contaPoupancaCIOptional.get().getContaPoupancaSaldo();
+        var contaCorrenteDestinoSaldo = contaCorrenteCDOptional.get().getContaCorrenteSaldo();
 
         // calculos para operacao
         var depositoContaCorrenteDestino = contaCorrenteDestinoSaldo + valorTransferencia;
@@ -248,37 +193,45 @@ public class ContaPoupancaService {
 
 
         if (contaPoupancaInicialSaldo >= valorTransferencia) {
-            // depósito na conta destino
-            var contaCorrenteDId = contaCorrenteRepository.getById(idCPD).getId();
-            var agenciaContaCorrenteD = contaCorrenteRepository.getById(idCPD).getAgencia();
-            var numeroContaCorrenteD = contaCorrenteRepository.getById(idCPD).getContaCorrenteNumero();
-            var clienteContaCorrenteD = contaCorrenteRepository.getById(idCPD).getCliente();
-
-            var contaCorrenteD = new ContaCorrente(contaCorrenteDId, agenciaContaCorrenteD, numeroContaCorrenteD, depositoContaCorrenteDestino, clienteContaCorrenteD);
-
-            contaCorrenteRepository.save(contaCorrenteD);
-
-            LocalDateTime data = LocalDateTime.now();
-            var extratoContaCorrente = new ExtratoContaCorrente(null, data, "Transferência Recebida", valorTransferencia, contaCorrenteD);
-            extratoContaCorrenteRepository.save(extratoContaCorrente);
-
             // saque na conta inicial
-            var contaPoupancaIId = contaPoupancaRepository.getById(idCPI).getId();
-            var agenciaContaPoupancaI = contaPoupancaRepository.getById(idCPI).getAgencia();
-            var numeroContaPoupancaI = contaPoupancaRepository.getById(idCPI).getContaPoupancaNumero();
-            var clienteContaPoupancaI = contaPoupancaRepository.getById(idCPI).getCliente();
+            operacaoContaPoupanca(idCPI, saqueContaPoupancaInicial, valorTransferencia, "Transferência Realizada");
 
-            var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, saqueContaPoupancaInicial, clienteContaPoupancaI);
-
-            contaPoupancaRepository.save(contaPoupancaI);
-
-            data = LocalDateTime.now();
-            var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, "Transferência Realizada", valorTransferencia, contaPoupancaI);
-            extratoContaPoupancaRepository.save(extratoContaPoupanca);
+            // depósito na conta destino
+            operacaoContaCorrente(idCCD, depositoContaCorrenteDestino, valorTransferencia, "Transferência Recebida");
 
             return "Transferência efetuada";
         } else {
             return "Valor inválido para transferência";
         }
+    }
+
+    public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao){
+        var contaPoupancaId = contaPoupancaRepository.getById(id).getId();
+        var agenciaContaPoupanca = contaPoupancaRepository.getById(id).getAgencia();
+        var numeroContaPoupanca = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
+        var clienteContaPoupanca = contaPoupancaRepository.getById(id).getCliente();
+
+        var contaPoupanca = new ContaPoupanca(contaPoupancaId, agenciaContaPoupanca, numeroContaPoupanca, resultadoOperacao, clienteContaPoupanca);
+
+        contaPoupancaRepository.save(contaPoupanca);
+
+        LocalDateTime data = LocalDateTime.now();
+        var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, operacao, valorOperacao, contaPoupanca);
+        extratoContaPoupancaRepository.save(extratoContaPoupanca);
+    }
+
+    public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao){
+        var contaPoupancaIId = contaPoupancaRepository.getById(id).getId();
+        var agenciaContaPoupancaI = contaPoupancaRepository.getById(id).getAgencia();
+        var numeroContaPoupancaI = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
+        var clienteContaPoupancaI = contaPoupancaRepository.getById(id).getCliente();
+
+        var contaPoupancaI = new ContaPoupanca(contaPoupancaIId, agenciaContaPoupancaI, numeroContaPoupancaI, resultadoOperacao, clienteContaPoupancaI);
+
+        contaPoupancaRepository.save(contaPoupancaI);
+
+        LocalDateTime data = LocalDateTime.now();
+        var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, operacao, valorOperacao, contaPoupancaI);
+        extratoContaPoupancaRepository.save(extratoContaPoupanca);
     }
 }
