@@ -2,11 +2,13 @@ package com.accenture.academico.bancoapi.controller;
 
 import com.accenture.academico.bancoapi.entity.Cliente;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
+import com.accenture.academico.bancoapi.exception.CampoObrigatorioEmptyException;
 import com.accenture.academico.bancoapi.exception.ClienteNotFoundException;
 import com.accenture.academico.bancoapi.model.ClienteModel;
 import com.accenture.academico.bancoapi.model.ErrorModel;
 import com.accenture.academico.bancoapi.service.ClienteService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,10 @@ public class ClienteController {
             return new ResponseEntity<>(cliente, HttpStatus.CREATED);
         } catch (AgenciaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (CampoObrigatorioEmptyException e){
+            return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return new ResponseEntity(new ErrorModel("Campo Obrigatório Inválido"), HttpStatus.NOT_FOUND);
         }
 
     }

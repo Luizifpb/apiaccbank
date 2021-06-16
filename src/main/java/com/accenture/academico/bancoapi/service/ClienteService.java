@@ -3,6 +3,7 @@ package com.accenture.academico.bancoapi.service;
 import com.accenture.academico.bancoapi.entity.Agencia;
 import com.accenture.academico.bancoapi.entity.Cliente;
 import com.accenture.academico.bancoapi.exception.AgenciaNotFoundException;
+import com.accenture.academico.bancoapi.exception.CampoObrigatorioEmptyException;
 import com.accenture.academico.bancoapi.exception.ClienteNotFoundException;
 import com.accenture.academico.bancoapi.model.ClienteModel;
 import com.accenture.academico.bancoapi.repository.ClienteRepository;
@@ -42,6 +43,10 @@ public class ClienteService {
 
         var agencia = new Agencia(clienteModel.getAgenciaModelId().getId(), null, null, null);
         var cliente = new Cliente(null, clienteModel.getNome(), clienteModel.getCpf(), clienteModel.getFone(), agencia);
+
+        if(cliente.getNomeCliente().isEmpty() || cliente.getCpfCliente().isEmpty() || cliente.getFoneCliente().isEmpty()){
+            throw new CampoObrigatorioEmptyException("Campo obrigatório vazio.");
+        }
 
         var clienteRetorno = clienteRepository.save(cliente);
 
