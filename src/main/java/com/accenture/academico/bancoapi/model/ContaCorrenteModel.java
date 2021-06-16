@@ -13,7 +13,6 @@ public class ContaCorrenteModel {
 
     private AgenciaModelId agenciaModelId;
     private String contaCorrenteNumero;
-    private double contaCorrenteSaldo;
 
     private ClienteModelId clienteModelId;
 }

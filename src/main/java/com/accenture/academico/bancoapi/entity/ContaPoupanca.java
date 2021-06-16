@@ -23,7 +23,7 @@ public class ContaPoupanca {
     @Column(unique = true, nullable = false)
     private String contaPoupancaNumero;
 
-    @Column(nullable = false)
+    @Column
     private double contaPoupancaSaldo;
 
     @OneToOne

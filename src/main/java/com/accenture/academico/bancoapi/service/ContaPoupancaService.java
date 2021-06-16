@@ -57,7 +57,7 @@ public class ContaPoupancaService {
 
         var cliente = new Cliente(contaPoupancaModel.getClienteModelId().getId(), null, null, null, null);
         var agencia = new Agencia(contaPoupancaModel.getAgenciaModelId().getId(), null, null, null);
-        var contaPoupanca = new ContaPoupanca(null, agencia, contaPoupancaModel.getContaPoupancaNumero(), contaPoupancaModel.getContaPoupancaSaldo(), cliente);
+        var contaPoupanca = new ContaPoupanca(null, agencia, contaPoupancaModel.getContaPoupancaNumero(), 0, cliente);
 
         var contaPoupancaRetorno = contaPoupancaRepository.save(contaPoupanca);
 

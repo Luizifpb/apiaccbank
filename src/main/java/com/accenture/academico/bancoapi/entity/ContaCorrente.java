@@ -23,7 +23,7 @@ public class ContaCorrente {
     @Column(unique = true, nullable = false)
     private String contaCorrenteNumero;
 
-    @Column(nullable = false)
+    @Column
     private double contaCorrenteSaldo;
 
     @OneToOne

@@ -13,7 +13,6 @@ public class ContaPoupancaModel {
 
     private AgenciaModelId agenciaModelId;
     private String contaPoupancaNumero;
-    private double contaPoupancaSaldo;
 
     private ClienteModelId clienteModelId;
 }

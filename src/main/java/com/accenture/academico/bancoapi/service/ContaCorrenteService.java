@@ -54,7 +54,7 @@ public class ContaCorrenteService {
 
         var cliente = new Cliente(contaCorrenteModel.getClienteModelId().getId(), null, null, null, null);
         var agencia = new Agencia(contaCorrenteModel.getAgenciaModelId().getId(), null, null, null);
-        var contaCorrente = new ContaCorrente(null, agencia, contaCorrenteModel.getContaCorrenteNumero(), contaCorrenteModel.getContaCorrenteSaldo(), cliente);
+        var contaCorrente = new ContaCorrente(null, agencia, contaCorrenteModel.getContaCorrenteNumero(), 0, cliente);
 
         var contaCorrenteRetorno = contaCorrenteRepository.save(contaCorrente);
 
