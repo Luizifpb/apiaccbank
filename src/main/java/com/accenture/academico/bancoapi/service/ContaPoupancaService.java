@@ -66,13 +66,15 @@ public class ContaPoupancaService {
         return contaPoupancaRetorno;
     }
 
-    public void deleteContaPoupanca(long id) throws ContaPoupancaNotFoundException
+    public Boolean deleteContaPoupanca(long id) throws ContaPoupancaNotFoundException
     {
         var contaPoupancaRetorno = contaPoupancaRepository.findById(id);
         if(contaPoupancaRetorno.isEmpty()){
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
         contaPoupancaRepository.deleteById(id);
+
+        return true;
     }
 
     public String saqueContaPoupanca(long id, double valorSaque) throws ContaPoupancaNotFoundException

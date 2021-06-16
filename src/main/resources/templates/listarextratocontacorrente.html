@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Extrato - ACC Bank</title>
+
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"  rel="stylesheet" />
+
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"  rel="stylesheet" />
+
+    <link th:href="@{/webjars/font-awesome/css/font-awesome.min.css}"  rel="stylesheet" />
+
+    <link th:href="@{/css/estilo.css}" rel="stylesheet" />
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" th:href="@{/listarextratocontacorrente}">Extrato Conta Corrente</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"
+                       data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        Menu
+                        <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="http://www.google.com" target="_blank">Site</a></li>
+                        <li><a href="http://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="http://www.youtube.com" target="_blank">YouTube</a></li>
+                        <li><a href="http://github.com" target="_blank">Github</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Extrato Conta Corrente</h1>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Operação</th>
+            <th>Valor</th>
+            <th>Data e Hora</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="extrato: ${listarextratocontacorrente}">
+            <td th:text="${extrato.operacao}"></td>
+            <td th:text="${#numbers.formatCurrency(extrato.valorOperacao)}"></td>
+            <td th:text="${#temporals.format(extrato.dataHoraMovimento, 'dd/MM/yyyy HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

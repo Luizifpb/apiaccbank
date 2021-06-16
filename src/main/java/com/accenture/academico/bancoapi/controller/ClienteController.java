@@ -8,7 +8,6 @@ import com.accenture.academico.bancoapi.model.ClienteModel;
 import com.accenture.academico.bancoapi.model.ErrorModel;
 import com.accenture.academico.bancoapi.service.ClienteService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,6 +3,7 @@ package com.accenture.academico.bancoapi.controller;
 import com.accenture.academico.bancoapi.entity.ExtratoContaCorrente;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.model.ErrorModel;
+import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
 import com.accenture.academico.bancoapi.service.ExtratoContaCorrenteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -19,6 +21,23 @@ import java.util.List;
 public class ExtratoContaCorrenteController {
     @Autowired
     ExtratoContaCorrenteService extratoContaCorrenteService;
+    @Autowired
+    ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
+    @Autowired
+    private ExtratoContaCorrenteRepository listarextratocontacorrente;
+
+    @GetMapping("/listarextratocontacorrente/{id}")
+    public ModelAndView listar(@PathVariable("id") long id) {
+
+        List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+
+//        List<ExtratoContaCorrente> lista = listarextratocontacorrente.findAll();
+
+        ModelAndView modelAndView = new ModelAndView("listarextratocontacorrente");
+        modelAndView.addObject("listarextratocontacorrente", lista);
+
+        return modelAndView;
+    }
 
     @GetMapping("/extratocontacorrente")
     public ResponseEntity<List<ExtratoContaCorrente>> getAllExtrato()

@@ -19,7 +19,7 @@ public class ExtratoContaCorrente {
     private Long id;
 
     @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone="GMT-3")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone="GMT-3")
     private LocalDateTime dataHoraMovimento;
 
     @Column(nullable = false)

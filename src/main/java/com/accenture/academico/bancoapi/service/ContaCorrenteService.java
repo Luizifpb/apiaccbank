@@ -63,7 +63,7 @@ public class ContaCorrenteService {
         return contaCorrenteRetorno;
     }
 
-    public void deleteContaCorrente(long id) throws ContaCorrenteNotFoundException
+    public Boolean deleteContaCorrente(long id) throws ContaCorrenteNotFoundException
     {
         // validacao de existencia de conta
         var contaCorrenteRetorno = contaCorrenteRepository.findById(id);
@@ -71,6 +71,8 @@ public class ContaCorrenteService {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
         contaCorrenteRepository.deleteById(id);
+
+        return true;
     }
 
     public String saqueContaCorrente(long id, double valorSaque) throws ContaCorrenteNotFoundException
