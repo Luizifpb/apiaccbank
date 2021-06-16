@@ -25,7 +25,7 @@ public class ExtratoContaPoupancaService {
     public List<ExtratoContaPoupanca> getAllExtratoPorContaPoupanca(long id) throws ContaPoupancaNotFoundException {
         var extratoContaPoupancaId = getAllExtrato()
                 .stream()
-                .filter(extrato -> extrato.getContaPoupanca().getId() == id)
+                .filter(extrato -> extrato.getContaPoupanca().getCliente().getId() == id)
                 .collect(Collectors.toList());
 
         if (extratoContaPoupancaId.isEmpty()) {

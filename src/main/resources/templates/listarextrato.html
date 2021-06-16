@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Extrato - ACC Bank</title>
+    <title>ACC Bank</title>
 
     <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"  rel="stylesheet" />
 
@@ -24,7 +24,7 @@
                     class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" th:href="@{/listarextratocontacorrente}">Extrato Conta Corrente</a>
+            <a class="navbar-brand" th:href="@{/listarextrato}">Bem-vindo(a) ao ACC BANK</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -67,6 +67,30 @@
             <td th:text="${extrato.operacao}"></td>
             <td th:text="${#numbers.formatCurrency(extrato.valorOperacao)}"></td>
             <td th:text="${#temporals.format(extrato.dataHoraMovimento, 'dd/MM/yyyy HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Extrato Conta Poupança</h1>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Operação</th>
+            <th>Valor</th>
+            <th>Data e Hora</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="extratoP: ${listarextratocontapoupanca}">
+            <td th:text="${extratoP.operacao}"></td>
+            <td th:text="${#numbers.formatCurrency(extratoP.valorOperacao)}"></td>
+            <td th:text="${#temporals.format(extratoP.dataHoraMovimento, 'dd/MM/yyyy HH:mm:ss')}"></td>
         </tr>
         </tbody>
     </table>

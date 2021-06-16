@@ -1,10 +1,12 @@
 package com.accenture.academico.bancoapi.controller;
 
 import com.accenture.academico.bancoapi.entity.ExtratoContaCorrente;
+import com.accenture.academico.bancoapi.entity.ExtratoContaPoupanca;
 import com.accenture.academico.bancoapi.exception.ContaCorrenteNotFoundException;
 import com.accenture.academico.bancoapi.model.ErrorModel;
 import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
 import com.accenture.academico.bancoapi.service.ExtratoContaCorrenteService;
+import com.accenture.academico.bancoapi.service.ExtratoContaPoupancaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,19 +24,19 @@ public class ExtratoContaCorrenteController {
     @Autowired
     ExtratoContaCorrenteService extratoContaCorrenteService;
     @Autowired
-    ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
+    ExtratoContaPoupancaService extratoContaPoupancaService;
     @Autowired
-    private ExtratoContaCorrenteRepository listarextratocontacorrente;
+    private ExtratoContaCorrenteRepository listarextrato;
 
-    @GetMapping("/listarextratocontacorrente/{id}")
-    public ModelAndView listar(@PathVariable("id") long id) {
+    @GetMapping("/listarextrato/{id}")
+    public ModelAndView listarextrato(@PathVariable("id") long id) {
 
         List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+        List<ExtratoContaPoupanca> lista2 = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
 
-//        List<ExtratoContaCorrente> lista = listarextratocontacorrente.findAll();
-
-        ModelAndView modelAndView = new ModelAndView("listarextratocontacorrente");
+        ModelAndView modelAndView = new ModelAndView("listarextrato");
         modelAndView.addObject("listarextratocontacorrente", lista);
+        modelAndView.addObject("listarextratocontapoupanca", lista2);
 
         return modelAndView;
     }
