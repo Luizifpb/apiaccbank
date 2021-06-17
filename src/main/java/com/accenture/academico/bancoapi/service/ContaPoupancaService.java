@@ -35,6 +35,8 @@ public class ContaPoupancaService {
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
     @Autowired
     ContaPoupancaService contaPoupancaService;
+    @Autowired
+    ExtratoContaPoupancaService extratoContaPoupancaService;
 
     public List<ContaPoupanca> getAllContasPoupancas()
     {
@@ -220,6 +222,42 @@ public class ContaPoupancaService {
             return "Transferência efetuada";
         } else {
             return "Valor inválido para transferência";
+        }
+    }
+
+    public String recalcularSaldoContaPoupanca(long id){
+        var saldoAtual = contaPoupancaService.getSaldoContaPoupancaByIdCliente(id);
+        var listaExtratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
+
+        double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
+        double valorTotalExtrato = 0;
+        for (ExtratoContaPoupanca operacao : listaExtratoContaPoupanca) {
+            if(operacao.getOperacao().equals("Saque")){
+                valorSaques = valorSaques + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Depósito")){
+                valorDepositos = valorDepositos + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Transferência Realizada")){
+                valorTransferenciasRealizadas = valorTransferenciasRealizadas + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Transferência Recebida")){
+                valorTransferenciasRecebidas = valorTransferenciasRecebidas + operacao.getValorOperacao();
+            }
+        }
+        valorTotalExtrato = (valorDepositos + valorTransferenciasRecebidas) - (valorSaques + valorTransferenciasRealizadas);
+
+        // buscar id da conta
+        var getContaPoupancaByIdCliente = getAllContasPoupancas().stream()
+                .filter(idconta -> idconta.getCliente().getId() == id).findFirst().get();
+        var contaId = getContaPoupancaByIdCliente.getId();
+
+        if (valorTotalExtrato == saldoAtual){
+            return "O saldo está correto.";
+        } else {
+            contaPoupancaService.getContaPoupancaById(contaId).setContaPoupancaSaldo(valorTotalExtrato);
+            contaPoupancaRepository.save(getContaPoupancaByIdCliente);
+            return "O seu saldo foi atualizado.";
         }
     }
 

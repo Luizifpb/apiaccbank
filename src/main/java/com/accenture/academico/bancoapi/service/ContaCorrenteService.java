@@ -31,6 +31,8 @@ public class ContaCorrenteService {
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
     @Autowired
     ContaCorrenteService contaCorrenteService;
+    @Autowired
+    ExtratoContaCorrenteService extratoContaCorrenteService;
 
     public List<ContaCorrente> getAllContasCorrentes()
     {
@@ -51,7 +53,7 @@ public class ContaCorrenteService {
 
     public double getSaldoContaCorrenteByIdCliente(long id) throws ContaCorrenteNotFoundException
     {
-        // validacao de existencia de conta
+        // buscar saldo da conta por id cliente
         var getSaldoContaCorrenteByIdCliente = getAllContasCorrentes().stream()
                 .filter(conta -> conta.getCliente().getId() == id).findFirst().get();
 
@@ -216,6 +218,42 @@ public class ContaCorrenteService {
             return "Transferência efetuada";
         } else {
             return "Valor inválido para transferência";
+        }
+    }
+
+    public String recalcularSaldoContaCorrente(long id){
+        var saldoAtual = contaCorrenteService.getSaldoContaCorrenteByIdCliente(id);
+        var listaExtratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+
+        double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
+        double valorTotalExtrato = 0;
+        for (ExtratoContaCorrente operacao : listaExtratoContaCorrente) {
+            if(operacao.getOperacao().equals("Saque")){
+                valorSaques = valorSaques + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Depósito")){
+                valorDepositos = valorDepositos + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Transferência Realizada")){
+                valorTransferenciasRealizadas = valorTransferenciasRealizadas + operacao.getValorOperacao();
+            }
+            if(operacao.getOperacao().equals("Transferência Recebida")){
+                valorTransferenciasRecebidas = valorTransferenciasRecebidas + operacao.getValorOperacao();
+            }
+        }
+        valorTotalExtrato = (valorDepositos + valorTransferenciasRecebidas) - (valorSaques + valorTransferenciasRealizadas);
+
+        // buscar id da conta
+        var getContaCorrenteByIdCliente = getAllContasCorrentes().stream()
+                .filter(idconta -> idconta.getCliente().getId() == id).findFirst().get();
+        var contaId = getContaCorrenteByIdCliente.getId();
+
+        if (valorTotalExtrato == saldoAtual){
+            return "O saldo está correto.";
+        } else {
+            contaCorrenteService.getContaCorrenteById(contaId).setContaCorrenteSaldo(valorTotalExtrato);
+            contaCorrenteRepository.save(getContaCorrenteByIdCliente);
+            return "O seu saldo foi atualizado.";
         }
     }
 

@@ -132,4 +132,10 @@ public class ContaCorrenteController {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/recalcularsaldocontacorrente/{id}")
+    public ResponseEntity<String> recalcularSaldoContaCorrente(@PathVariable("id") long id)
+    {
+        return new ResponseEntity(contaCorrenteService.recalcularSaldoContaCorrente(id), HttpStatus.OK);
+    }
 }

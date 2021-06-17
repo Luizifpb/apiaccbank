@@ -133,4 +133,10 @@ public class ContaPoupancaController {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/recalcularsaldocontapoupanca/{id}")
+    public ResponseEntity<String> recalcularSaldoContaPoupanca(@PathVariable("id") long id)
+    {
+        return new ResponseEntity(contaPoupancaService.recalcularSaldoContaPoupanca(id), HttpStatus.OK);
+    }
 }
