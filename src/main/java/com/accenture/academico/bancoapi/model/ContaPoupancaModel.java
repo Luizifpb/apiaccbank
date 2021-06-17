@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class ContaPoupancaModel {
 
     private AgenciaModelId agenciaModelId;
-    private String contaPoupancaNumero;
 
     private ClienteModelId clienteModelId;
 }

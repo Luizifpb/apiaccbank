@@ -37,6 +37,8 @@ public class ContaPoupancaController {
             return new ResponseEntity<>(contaPoupanca, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -48,6 +50,8 @@ public class ContaPoupancaController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
 
     }
@@ -58,10 +62,10 @@ public class ContaPoupancaController {
         try {
             var contaPoupanca = contaPoupancaService.saveOrUpdate(contaPoupancaModel);
             return new ResponseEntity<>(contaPoupanca, HttpStatus.CREATED);
-        } catch (ClienteNotFoundException e){
+        } catch (ClienteNotFoundException | AgenciaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (AgenciaNotFoundException e){
-            return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Cliente já possui uma conta poupança"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -73,6 +77,8 @@ public class ContaPoupancaController {
             return new ResponseEntity(saque, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -84,6 +90,8 @@ public class ContaPoupancaController {
             return new ResponseEntity(deposito, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -95,6 +103,8 @@ public class ContaPoupancaController {
             return new ResponseEntity(transferenciaEntreContasPoupancasBanco, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -106,6 +116,8 @@ public class ContaPoupancaController {
             return new ResponseEntity(transferenciaEntreContasPIOutroBanco, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -117,7 +129,8 @@ public class ContaPoupancaController {
             return new ResponseEntity(transferenciaContasPoupancasParaContasCorrentes, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
-
 }

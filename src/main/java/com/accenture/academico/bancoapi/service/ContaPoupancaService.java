@@ -33,6 +33,8 @@ public class ContaPoupancaService {
     ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
     @Autowired
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
+    @Autowired
+    ContaPoupancaService contaPoupancaService;
 
     public List<ContaPoupanca> getAllContasPoupancas()
     {
@@ -68,7 +70,7 @@ public class ContaPoupancaService {
 
         var cliente = new Cliente(contaPoupancaModel.getClienteModelId().getId(), null, null, null, null);
         var agencia = new Agencia(contaPoupancaModel.getAgenciaModelId().getId(), null, null, null);
-        var contaPoupanca = new ContaPoupanca(null, agencia, contaPoupancaModel.getContaPoupancaNumero(), 0, cliente);
+        var contaPoupanca = new ContaPoupanca(null, agencia, gerarNumeroContaPoupanca(), 0, cliente);
 
         var contaPoupancaRetorno = contaPoupancaRepository.save(contaPoupanca);
 
@@ -249,5 +251,12 @@ public class ContaPoupancaService {
         LocalDateTime data = LocalDateTime.now();
         var extratoContaPoupanca = new ExtratoContaPoupanca(null, data, operacao, valorOperacao, contaPoupancaI);
         extratoContaPoupancaRepository.save(extratoContaPoupanca);
+    }
+
+    public String gerarNumeroContaPoupanca(){
+        var size = contaPoupancaService.getAllContasPoupancas().size();
+        int numero = size + 1;
+        var numeroContaPoupanca = Integer.toString(numero);
+        return numeroContaPoupanca;
     }
 }

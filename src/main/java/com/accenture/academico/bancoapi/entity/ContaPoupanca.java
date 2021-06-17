@@ -27,7 +27,7 @@ public class ContaPoupanca {
     private double contaPoupancaSaldo;
 
     @OneToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "cliente_id", unique = true)
     private Cliente cliente;
 
 }

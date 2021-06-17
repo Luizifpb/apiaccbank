@@ -34,6 +34,8 @@ public class ExtratoContaCorrenteController {
             return new ResponseEntity<>(extratoContaCorrente, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 }

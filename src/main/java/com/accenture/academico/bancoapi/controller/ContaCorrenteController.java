@@ -36,6 +36,8 @@ public class ContaCorrenteController {
                 return new ResponseEntity<>(contaCorrente, HttpStatus.OK);
             } catch (ContaCorrenteNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
             }
         }
 
@@ -47,6 +49,8 @@ public class ContaCorrenteController {
                 return new ResponseEntity(HttpStatus.OK);
             } catch (ContaCorrenteNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
             }
 
         }
@@ -57,14 +61,13 @@ public class ContaCorrenteController {
             try {
                 var contaCorrente = contaCorrenteService.saveOrUpdate(contaCorrenteModel);
                 return new ResponseEntity<>(contaCorrente, HttpStatus.CREATED);
-            } catch (ClienteNotFoundException e){
+            } catch (ClienteNotFoundException | AgenciaNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
-            } catch (AgenciaNotFoundException e){
-                return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                return new ResponseEntity(new ErrorModel("Cliente já possui uma conta corrente"), HttpStatus.NOT_FOUND);
             }
-
         }
-
+    
         @PutMapping("/saquecontacorrente/{id}/{valor}")
         public ResponseEntity<Double> saqueContaCorrente(@PathVariable("id") long id, @PathVariable("valor") double valor)
         {
@@ -73,6 +76,8 @@ public class ContaCorrenteController {
                 return new ResponseEntity(saque, HttpStatus.OK);
             } catch (ContaCorrenteNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
             }
         }
 
@@ -84,6 +89,8 @@ public class ContaCorrenteController {
                 return new ResponseEntity(deposito, HttpStatus.OK);
             } catch (ContaCorrenteNotFoundException e){
                 return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
             }
         }
 
@@ -95,6 +102,8 @@ public class ContaCorrenteController {
             return new ResponseEntity(transferenciaEntreContasCorrentesBanco, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -106,6 +115,8 @@ public class ContaCorrenteController {
             return new ResponseEntity(transferenciaEntreContasCIOutroBanco, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -117,6 +128,8 @@ public class ContaCorrenteController {
             return new ResponseEntity(transferenciaContasCorrentesParaContasPoupancas, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e){
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
         }
     }
 }

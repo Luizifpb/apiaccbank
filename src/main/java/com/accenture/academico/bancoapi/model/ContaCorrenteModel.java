@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class ContaCorrenteModel {
 
     private AgenciaModelId agenciaModelId;
-    private String contaCorrenteNumero;
 
     private ClienteModelId clienteModelId;
 }

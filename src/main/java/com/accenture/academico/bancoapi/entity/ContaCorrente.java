@@ -27,7 +27,7 @@ public class ContaCorrente {
     private double contaCorrenteSaldo;
 
     @OneToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "cliente_id", unique = true)
     private Cliente cliente;
 
 }

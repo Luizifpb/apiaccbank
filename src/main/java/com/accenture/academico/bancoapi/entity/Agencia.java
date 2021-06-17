@@ -18,13 +18,13 @@ public class Agencia {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String nomeAgencia;
+    private String nomeAgencia = "Agência Central";
 
     @Column(unique = true, nullable = false)
-    private String enderecoAgencia;
+    private String enderecoAgencia = "Rua Floriano Peixoto - 101, Centro, Campina Grande - PB";
 
-    @Size(min = 16)
+    @Size(min = 11)
     @Column(unique = true, nullable = false)
-    private String foneAgencia;
+    private String foneAgencia = "0800 888 9009";
 
 }

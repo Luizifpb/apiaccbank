@@ -1,7 +1,9 @@
 package com.accenture.academico.bancoapi;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.accenture.academico.bancoapi.entity.Cliente;
+import com.accenture.academico.bancoapi.model.AgenciaModelId;
+import com.accenture.academico.bancoapi.model.ClienteModel;
+import com.accenture.academico.bancoapi.service.ClienteService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.accenture.academico.bancoapi.entity.Agencia;
-import com.accenture.academico.bancoapi.entity.Cliente;
-import com.accenture.academico.bancoapi.model.AgenciaModelId;
-import com.accenture.academico.bancoapi.model.ClienteModel;
-import com.accenture.academico.bancoapi.repository.ClienteRepository;
-import com.accenture.academico.bancoapi.service.ClienteService;
-
 import java.sql.*;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
