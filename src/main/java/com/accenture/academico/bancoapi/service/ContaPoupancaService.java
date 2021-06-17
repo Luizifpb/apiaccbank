@@ -38,24 +38,21 @@ public class ContaPoupancaService {
     @Autowired
     ExtratoContaPoupancaService extratoContaPoupancaService;
 
-    public List<ContaPoupanca> getAllContasPoupancas()
-    {
+    public List<ContaPoupanca> getAllContasPoupancas() {
         List<ContaPoupanca> contasPoupancas = new ArrayList<ContaPoupanca>();
         contaPoupancaRepository.findAll().forEach(contaPoupanca -> contasPoupancas.add(contaPoupanca));
         return contasPoupancas;
     }
 
-    public ContaPoupanca getContaPoupancaById(long id) throws ContaPoupancaNotFoundException
-    {
+    public ContaPoupanca getContaPoupancaById(long id) throws ContaPoupancaNotFoundException {
         var contaPoupancaRetorno = contaPoupancaRepository.findById(id);
-        if(contaPoupancaRetorno.isEmpty()){
+        if (contaPoupancaRetorno.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
         return contaPoupancaRetorno.get();
     }
 
-    public double getSaldoContaPoupancaByIdCliente(long id) throws ContaCorrenteNotFoundException
-    {
+    public double getSaldoContaPoupancaByIdCliente(long id) throws ContaCorrenteNotFoundException {
         // validacao de existencia de conta
         var getSaldoContaPoupancaByIdCliente = getAllContasPoupancas().stream()
                 .filter(conta -> conta.getCliente().getId() == id).findFirst().get();
@@ -65,8 +62,7 @@ public class ContaPoupancaService {
         return saldo;
     }
 
-    public ContaPoupanca saveOrUpdate(ContaPoupancaModel contaPoupancaModel) throws AgenciaNotFoundException
-    {
+    public ContaPoupanca saveOrUpdate(ContaPoupancaModel contaPoupancaModel) throws AgenciaNotFoundException {
         var clienteRetorno = clienteService.getClienteById(contaPoupancaModel.getClienteModelId().getId());
         var agenciaRetorno = agenciaService.getAgenciaById(contaPoupancaModel.getAgenciaModelId().getId());
 
@@ -81,10 +77,9 @@ public class ContaPoupancaService {
         return contaPoupancaRetorno;
     }
 
-    public Boolean deleteContaPoupanca(long id) throws ContaPoupancaNotFoundException
-    {
+    public Boolean deleteContaPoupanca(long id) throws ContaPoupancaNotFoundException {
         var contaPoupancaRetorno = contaPoupancaRepository.findById(id);
-        if(contaPoupancaRetorno.isEmpty()){
+        if (contaPoupancaRetorno.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
         contaPoupancaRepository.deleteById(id);
@@ -92,11 +87,10 @@ public class ContaPoupancaService {
         return true;
     }
 
-    public String saqueContaPoupanca(long id, double valorSaque) throws ContaPoupancaNotFoundException
-    {
+    public String saqueContaPoupanca(long id, double valorSaque) throws ContaPoupancaNotFoundException {
         // validacao de existencia de conta
         var contaPoupancaOptional = contaPoupancaRepository.findById(id);
-        if(contaPoupancaOptional.isEmpty()){
+        if (contaPoupancaOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
 
@@ -113,12 +107,11 @@ public class ContaPoupancaService {
         }
     }
 
-    public String depositoContaPoupanca(long id, double valorDeposito) throws ContaPoupancaNotFoundException
-    {
+    public String depositoContaPoupanca(long id, double valorDeposito) throws ContaPoupancaNotFoundException {
 
         // validacao de existencia de conta
         var contaPoupancaOptional = contaPoupancaRepository.findById(id);
-        if(contaPoupancaOptional.isEmpty()){
+        if (contaPoupancaOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupanca não encontrada.");
         }
 
@@ -136,13 +129,12 @@ public class ContaPoupancaService {
         }
     }
 
-    public String transferenciaEntreContasPoupancasBanco(long idCPI, double valorTransferencia, long idCPD) throws ContaPoupancaNotFoundException
-    {
+    public String transferenciaEntreContasPoupancasBanco(long idCPI, double valorTransferencia, long idCPD) throws ContaPoupancaNotFoundException {
 
         // validacao de existencia de conta
         var contaPoupancaCIOptional = contaPoupancaRepository.findById(idCPI);
         var contaPoupancaCDOptional = contaPoupancaRepository.findById(idCPD);
-        if(contaPoupancaCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()){
+        if (contaPoupancaCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupança não encontrada.");
         }
 
@@ -168,12 +160,11 @@ public class ContaPoupancaService {
         }
     }
 
-    public String transferenciaEntreContasPIOutroBanco(long idCPI, double valorTransferencia, long idCPCEXterno) throws ContaCorrenteNotFoundException
-    {
+    public String transferenciaEntreContasPIOutroBanco(long idCPI, double valorTransferencia, long idCPCEXterno) throws ContaCorrenteNotFoundException {
 
         // validacao de existencia de conta
         var contaPoupancaCIOptional = contaPoupancaRepository.findById(idCPI);
-        if(contaPoupancaCIOptional.isEmpty()){
+        if (contaPoupancaCIOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta Poupança não encontrada.");
         }
 
@@ -193,13 +184,12 @@ public class ContaPoupancaService {
         }
     }
 
-    public String transferenciaContasPoupancasParaContasCorrentes(long idCPI, double valorTransferencia, long idCCD) throws ContaPoupancaNotFoundException
-    {
+    public String transferenciaContasPoupancasParaContasCorrentes(long idCPI, double valorTransferencia, long idCCD) throws ContaPoupancaNotFoundException {
 
         // validacao de existencia de conta
         var contaPoupancaCIOptional = contaPoupancaRepository.findById(idCPI);
         var contaCorrenteCDOptional = contaCorrenteRepository.findById(idCCD);
-        if(contaPoupancaCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()){
+        if (contaPoupancaCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta não encontrada.");
         }
 
@@ -225,23 +215,23 @@ public class ContaPoupancaService {
         }
     }
 
-    public String recalcularSaldoContaPoupanca(long id){
+    public String recalcularSaldoContaPoupanca(long id) {
         var saldoAtual = contaPoupancaService.getSaldoContaPoupancaByIdCliente(id);
         var listaExtratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
         double valorTotalExtrato = 0;
         for (ExtratoContaPoupanca operacao : listaExtratoContaPoupanca) {
-            if(operacao.getOperacao().equals("Saque")){
+            if (operacao.getOperacao().equals("Saque")) {
                 valorSaques = valorSaques + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Depósito")){
+            if (operacao.getOperacao().equals("Depósito")) {
                 valorDepositos = valorDepositos + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Transferência Realizada")){
+            if (operacao.getOperacao().equals("Transferência Realizada")) {
                 valorTransferenciasRealizadas = valorTransferenciasRealizadas + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Transferência Recebida")){
+            if (operacao.getOperacao().equals("Transferência Recebida")) {
                 valorTransferenciasRecebidas = valorTransferenciasRecebidas + operacao.getValorOperacao();
             }
         }
@@ -252,7 +242,7 @@ public class ContaPoupancaService {
                 .filter(idconta -> idconta.getCliente().getId() == id).findFirst().get();
         var contaId = getContaPoupancaByIdCliente.getId();
 
-        if (valorTotalExtrato == saldoAtual){
+        if (valorTotalExtrato == saldoAtual) {
             return "O saldo está correto.";
         } else {
             contaPoupancaService.getContaPoupancaById(contaId).setContaPoupancaSaldo(valorTotalExtrato);
@@ -261,7 +251,7 @@ public class ContaPoupancaService {
         }
     }
 
-    public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao){
+    public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao) {
         var contaPoupancaId = contaPoupancaRepository.getById(id).getId();
         var agenciaContaPoupanca = contaPoupancaRepository.getById(id).getAgencia();
         var numeroContaPoupanca = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
@@ -276,7 +266,7 @@ public class ContaPoupancaService {
         extratoContaPoupancaRepository.save(extratoContaPoupanca);
     }
 
-    public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao){
+    public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao) {
         var contaPoupancaIId = contaPoupancaRepository.getById(id).getId();
         var agenciaContaPoupancaI = contaPoupancaRepository.getById(id).getAgencia();
         var numeroContaPoupancaI = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
@@ -291,7 +281,7 @@ public class ContaPoupancaService {
         extratoContaPoupancaRepository.save(extratoContaPoupanca);
     }
 
-    public String gerarNumeroContaPoupanca(){
+    public String gerarNumeroContaPoupanca() {
         var size = contaPoupancaService.getAllContasPoupancas().size();
         int numero = size + 1;
         var numeroContaPoupanca = Integer.toString(numero);

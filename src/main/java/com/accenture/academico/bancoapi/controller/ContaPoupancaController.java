@@ -24,18 +24,16 @@ public class ContaPoupancaController {
     ContaPoupancaService contaPoupancaService;
 
     @GetMapping("/contaspoupancas")
-    public ResponseEntity<List<ContaPoupanca>> getAllContasPoupancas()
-    {
+    public ResponseEntity<List<ContaPoupanca>> getAllContasPoupancas() {
         return new ResponseEntity<>(contaPoupancaService.getAllContasPoupancas(), HttpStatus.OK);
     }
 
     @GetMapping("/contaspoupancas/{id}")
-    public ResponseEntity<ContaPoupanca> getContaPoupanca(@PathVariable("id") long id)
-    {
-        try{
+    public ResponseEntity<ContaPoupanca> getContaPoupanca(@PathVariable("id") long id) {
+        try {
             var contaPoupanca = contaPoupancaService.getContaPoupancaById(id);
             return new ResponseEntity<>(contaPoupanca, HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -43,12 +41,11 @@ public class ContaPoupancaController {
     }
 
     @DeleteMapping("/contaspoupancas/{id}")
-    public ResponseEntity<Integer> deleteContaPoupanca(@PathVariable("id") long id)
-    {
+    public ResponseEntity<Integer> deleteContaPoupanca(@PathVariable("id") long id) {
         try {
             contaPoupancaService.deleteContaPoupanca(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -57,12 +54,11 @@ public class ContaPoupancaController {
     }
 
     @PostMapping("/contapoupanca")
-    public ResponseEntity<ContaPoupanca> saveContaPoupanca(@RequestBody ContaPoupancaModel contaPoupancaModel)
-    {
+    public ResponseEntity<ContaPoupanca> saveContaPoupanca(@RequestBody ContaPoupancaModel contaPoupancaModel) {
         try {
             var contaPoupanca = contaPoupancaService.saveOrUpdate(contaPoupancaModel);
             return new ResponseEntity<>(contaPoupanca, HttpStatus.CREATED);
-        } catch (ClienteNotFoundException | AgenciaNotFoundException e){
+        } catch (ClienteNotFoundException | AgenciaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Cliente já possui uma conta poupança"), HttpStatus.NOT_FOUND);
@@ -70,12 +66,11 @@ public class ContaPoupancaController {
     }
 
     @PutMapping("/saquecontapoupanca/{id}/{valor}")
-    public ResponseEntity<Double> saqueContaPoupanca(@PathVariable("id") long id, @PathVariable("valor") double valor)
-    {
+    public ResponseEntity<Double> saqueContaPoupanca(@PathVariable("id") long id, @PathVariable("valor") double valor) {
         try {
             var saque = contaPoupancaService.saqueContaPoupanca(id, valor);
             return new ResponseEntity(saque, HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -83,12 +78,11 @@ public class ContaPoupancaController {
     }
 
     @PutMapping("/depositocontapoupanca/{id}/{valor}")
-    public ResponseEntity<Double> depositoContaPoupanca(@PathVariable("id") long id, @PathVariable("valor") double valor)
-    {
+    public ResponseEntity<Double> depositoContaPoupanca(@PathVariable("id") long id, @PathVariable("valor") double valor) {
         try {
             var deposito = contaPoupancaService.depositoContaPoupanca(id, valor);
             return new ResponseEntity(deposito, HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -96,12 +90,11 @@ public class ContaPoupancaController {
     }
 
     @PutMapping("/transferenciaentrecontaspoupancasbanco/{idCPI}/{valor}/{idCPD}")
-    public ResponseEntity<Double> transferenciaEntreContasPoupancasBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPD") long idCPD)
-    {
+    public ResponseEntity<Double> transferenciaEntreContasPoupancasBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPD") long idCPD) {
         try {
             var transferenciaEntreContasPoupancasBanco = contaPoupancaService.transferenciaEntreContasPoupancasBanco(idCPI, valor, idCPD);
             return new ResponseEntity(transferenciaEntreContasPoupancasBanco, HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -109,12 +102,11 @@ public class ContaPoupancaController {
     }
 
     @PutMapping("/transferenciaentrecontaspioutrobanco/{idCPI}/{valor}/{idCPCExterno}")
-    public ResponseEntity<Double> transferenciaEntreContasPIOutroBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPCExterno") long idCPCExterno)
-    {
+    public ResponseEntity<Double> transferenciaEntreContasPIOutroBanco(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCPCExterno") long idCPCExterno) {
         try {
             var transferenciaEntreContasPIOutroBanco = contaPoupancaService.transferenciaEntreContasPIOutroBanco(idCPI, valor, idCPCExterno);
             return new ResponseEntity(transferenciaEntreContasPIOutroBanco, HttpStatus.OK);
-        } catch (ContaPoupancaNotFoundException e){
+        } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -122,12 +114,11 @@ public class ContaPoupancaController {
     }
 
     @PutMapping("/transferenciacontaspoupancasparacontascorrentes/{idCPI}/{valor}/{idCCD}")
-    public ResponseEntity<Double> transferenciaContasPoupancasParaContasCorrentes(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCCD") long idCCD)
-    {
+    public ResponseEntity<Double> transferenciaContasPoupancasParaContasCorrentes(@PathVariable("idCPI") long idCPI, @PathVariable("valor") double valor, @PathVariable("idCCD") long idCCD) {
         try {
             var transferenciaContasPoupancasParaContasCorrentes = contaPoupancaService.transferenciaContasPoupancasParaContasCorrentes(idCPI, valor, idCCD);
             return new ResponseEntity(transferenciaContasPoupancasParaContasCorrentes, HttpStatus.OK);
-        } catch (ContaCorrenteNotFoundException e){
+        } catch (ContaCorrenteNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);
@@ -135,8 +126,7 @@ public class ContaPoupancaController {
     }
 
     @GetMapping("/recalcularsaldocontapoupanca/{id}")
-    public ResponseEntity<String> recalcularSaldoContaPoupanca(@PathVariable("id") long id)
-    {
+    public ResponseEntity<String> recalcularSaldoContaPoupanca(@PathVariable("id") long id) {
         return new ResponseEntity(contaPoupancaService.recalcularSaldoContaPoupanca(id), HttpStatus.OK);
     }
 }

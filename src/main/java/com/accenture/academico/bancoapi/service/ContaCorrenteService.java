@@ -34,25 +34,22 @@ public class ContaCorrenteService {
     @Autowired
     ExtratoContaCorrenteService extratoContaCorrenteService;
 
-    public List<ContaCorrente> getAllContasCorrentes()
-    {
+    public List<ContaCorrente> getAllContasCorrentes() {
         List<ContaCorrente> contasCorrentes = new ArrayList<ContaCorrente>();
         contaCorrenteRepository.findAll().forEach(contaCorrente -> contasCorrentes.add(contaCorrente));
         return contasCorrentes;
     }
 
-    public ContaCorrente getContaCorrenteById(long id) throws ContaCorrenteNotFoundException
-    {
+    public ContaCorrente getContaCorrenteById(long id) throws ContaCorrenteNotFoundException {
         // validacao de existencia de conta
         var contaCorrenteRetorno = contaCorrenteRepository.findById(id);
-        if(contaCorrenteRetorno.isEmpty()){
+        if (contaCorrenteRetorno.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
         return contaCorrenteRetorno.get();
     }
 
-    public double getSaldoContaCorrenteByIdCliente(long id) throws ContaCorrenteNotFoundException
-    {
+    public double getSaldoContaCorrenteByIdCliente(long id) throws ContaCorrenteNotFoundException {
         // buscar saldo da conta por id cliente
         var getSaldoContaCorrenteByIdCliente = getAllContasCorrentes().stream()
                 .filter(conta -> conta.getCliente().getId() == id).findFirst().get();
@@ -62,8 +59,7 @@ public class ContaCorrenteService {
         return saldo;
     }
 
-    public ContaCorrente saveOrUpdate(ContaCorrenteModel contaCorrenteModel) throws AgenciaNotFoundException
-    {
+    public ContaCorrente saveOrUpdate(ContaCorrenteModel contaCorrenteModel) throws AgenciaNotFoundException {
         var clienteRetorno = clienteService.getClienteById(contaCorrenteModel.getClienteModelId().getId());
         var agenciaRetorno = agenciaService.getAgenciaById(contaCorrenteModel.getAgenciaModelId().getId());
 
@@ -78,11 +74,10 @@ public class ContaCorrenteService {
         return contaCorrenteRetorno;
     }
 
-    public Boolean deleteContaCorrente(long id) throws ContaCorrenteNotFoundException
-    {
+    public Boolean deleteContaCorrente(long id) throws ContaCorrenteNotFoundException {
         // validacao de existencia de conta
         var contaCorrenteRetorno = contaCorrenteRepository.findById(id);
-        if(contaCorrenteRetorno.isEmpty()){
+        if (contaCorrenteRetorno.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
         contaCorrenteRepository.deleteById(id);
@@ -90,11 +85,10 @@ public class ContaCorrenteService {
         return true;
     }
 
-    public String saqueContaCorrente(long id, double valorSaque) throws ContaCorrenteNotFoundException
-    {
+    public String saqueContaCorrente(long id, double valorSaque) throws ContaCorrenteNotFoundException {
         // validacao de existencia de conta
         var contaCorrenteOptional = contaCorrenteRepository.findById(id);
-        if(contaCorrenteOptional.isEmpty()){
+        if (contaCorrenteOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
@@ -111,11 +105,10 @@ public class ContaCorrenteService {
         }
     }
 
-    public String depositoContaCorrente(long id, double valorDeposito) throws ContaCorrenteNotFoundException
-    {
+    public String depositoContaCorrente(long id, double valorDeposito) throws ContaCorrenteNotFoundException {
         // validacao de existencia de conta
         var contaCorrenteOptional = contaCorrenteRepository.findById(id);
-        if(contaCorrenteOptional.isEmpty()){
+        if (contaCorrenteOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
@@ -132,13 +125,12 @@ public class ContaCorrenteService {
         }
     }
 
-    public String transferenciaEntreContasCorrentesBanco(long idCCI, double valorTransferencia, long idCCD) throws ContaCorrenteNotFoundException
-    {
+    public String transferenciaEntreContasCorrentesBanco(long idCCI, double valorTransferencia, long idCCD) throws ContaCorrenteNotFoundException {
 
         // validacao de existencia de conta
         var contaCorrenteCIOptional = contaCorrenteRepository.findById(idCCI);
         var contaCorrenteCDOptional = contaCorrenteRepository.findById(idCCD);
-        if(contaCorrenteCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()){
+        if (contaCorrenteCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
@@ -164,12 +156,11 @@ public class ContaCorrenteService {
         }
     }
 
-    public String transferenciaEntreContasCIOutroBanco(long idCCI, double valorTransferencia, long idCCPEXterno) throws ContaCorrenteNotFoundException
-    {
+    public String transferenciaEntreContasCIOutroBanco(long idCCI, double valorTransferencia, long idCCPEXterno) throws ContaCorrenteNotFoundException {
 
         // validacao de existencia de conta
         var contaCorrenteCIOptional = contaCorrenteRepository.findById(idCCI);
-        if(contaCorrenteCIOptional.isEmpty()){
+        if (contaCorrenteCIOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
@@ -189,13 +180,12 @@ public class ContaCorrenteService {
         }
     }
 
-    public String transferenciaContasCorrentesParaContasPoupancas(long idCCI, double valorTransferencia, long idCPD) throws ContaCorrenteNotFoundException
-    {
+    public String transferenciaContasCorrentesParaContasPoupancas(long idCCI, double valorTransferencia, long idCPD) throws ContaCorrenteNotFoundException {
 
         // validacao de existencia de conta
         var contaCorrenteCIOptional = contaCorrenteRepository.findById(idCCI);
         var contaPoupancaCDOptional = contaPoupancaRepository.findById(idCPD);
-        if(contaCorrenteCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()){
+        if (contaCorrenteCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta não encontrada.");
         }
 
@@ -221,23 +211,23 @@ public class ContaCorrenteService {
         }
     }
 
-    public String recalcularSaldoContaCorrente(long id){
+    public String recalcularSaldoContaCorrente(long id) {
         var saldoAtual = contaCorrenteService.getSaldoContaCorrenteByIdCliente(id);
         var listaExtratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
         double valorTotalExtrato = 0;
         for (ExtratoContaCorrente operacao : listaExtratoContaCorrente) {
-            if(operacao.getOperacao().equals("Saque")){
+            if (operacao.getOperacao().equals("Saque")) {
                 valorSaques = valorSaques + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Depósito")){
+            if (operacao.getOperacao().equals("Depósito")) {
                 valorDepositos = valorDepositos + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Transferência Realizada")){
+            if (operacao.getOperacao().equals("Transferência Realizada")) {
                 valorTransferenciasRealizadas = valorTransferenciasRealizadas + operacao.getValorOperacao();
             }
-            if(operacao.getOperacao().equals("Transferência Recebida")){
+            if (operacao.getOperacao().equals("Transferência Recebida")) {
                 valorTransferenciasRecebidas = valorTransferenciasRecebidas + operacao.getValorOperacao();
             }
         }
@@ -248,7 +238,7 @@ public class ContaCorrenteService {
                 .filter(idconta -> idconta.getCliente().getId() == id).findFirst().get();
         var contaId = getContaCorrenteByIdCliente.getId();
 
-        if (valorTotalExtrato == saldoAtual){
+        if (valorTotalExtrato == saldoAtual) {
             return "O saldo está correto.";
         } else {
             contaCorrenteService.getContaCorrenteById(contaId).setContaCorrenteSaldo(valorTotalExtrato);
@@ -257,7 +247,7 @@ public class ContaCorrenteService {
         }
     }
 
-    public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao){
+    public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao) {
         var contaCorrenteId = contaCorrenteRepository.getById(id).getId();
         var agenciaContaCorrente = contaCorrenteRepository.getById(id).getAgencia();
         var numeroContaCorrente = contaCorrenteRepository.getById(id).getContaCorrenteNumero();
@@ -272,7 +262,7 @@ public class ContaCorrenteService {
         extratoContaCorrenteRepository.save(extratoContaCorrente);
     }
 
-    public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao){
+    public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao) {
         var contaPoupancaDId = contaPoupancaRepository.getById(id).getId();
         var agenciaContaPoupancaD = contaPoupancaRepository.getById(id).getAgencia();
         var numeroContaPoupancaD = contaPoupancaRepository.getById(id).getContaPoupancaNumero();
@@ -287,7 +277,7 @@ public class ContaCorrenteService {
         extratoContaPoupancaRepository.save(extratoContaPoupanca);
     }
 
-    public String gerarNumeroContaCorrente(){
+    public String gerarNumeroContaCorrente() {
         var size = contaCorrenteService.getAllContasCorrentes().size();
         int numero = size + 1;
         var numeroContaCorrente = Integer.toString(numero);

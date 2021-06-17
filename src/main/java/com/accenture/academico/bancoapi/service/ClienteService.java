@@ -21,30 +21,28 @@ public class ClienteService {
     AgenciaService agenciaService;
 
     //getting all clients record
-    public List<Cliente> getAllCliente()
-    {
+    public List<Cliente> getAllCliente() {
         List<Cliente> clientes = new ArrayList<Cliente>();
         clienteRepository.findAll().forEach(cliente -> clientes.add(cliente));
         return clientes;
     }
+
     //getting a specific record
-    public Cliente getClienteById(long id) throws ClienteNotFoundException
-    {
+    public Cliente getClienteById(long id) throws ClienteNotFoundException {
         var clienteRetorno = clienteRepository.findById(id);
-        if(clienteRetorno.isEmpty()){
+        if (clienteRetorno.isEmpty()) {
             throw new ClienteNotFoundException("Cliente não encontrado.");
         }
         return clienteRetorno.get();
     }
 
-    public Cliente saveOrUpdate(ClienteModel clienteModel) throws AgenciaNotFoundException
-    {
+    public Cliente saveOrUpdate(ClienteModel clienteModel) throws AgenciaNotFoundException {
         var agenciaRetorno = agenciaService.getAgenciaById(clienteModel.getAgenciaModelId().getId());
 
         var agencia = new Agencia(clienteModel.getAgenciaModelId().getId(), null, null, null);
         var cliente = new Cliente(null, clienteModel.getNome(), clienteModel.getCpf(), clienteModel.getFone(), agencia);
 
-        if(cliente.getNomeCliente().isEmpty() || cliente.getCpfCliente().isEmpty() || cliente.getFoneCliente().isEmpty()){
+        if (cliente.getNomeCliente().isEmpty() || cliente.getCpfCliente().isEmpty() || cliente.getFoneCliente().isEmpty()) {
             throw new CampoObrigatorioEmptyException("Campo obrigatório vazio.");
         }
 
@@ -53,11 +51,11 @@ public class ClienteService {
         clienteRetorno.setAgencia(agenciaRetorno);
         return clienteRetorno;
     }
+
     //deleting a specific record
-    public Boolean delete(long id) throws ClienteNotFoundException
-    {
+    public Boolean delete(long id) throws ClienteNotFoundException {
         var clienteRetorno = clienteRepository.findById(id);
-        if(clienteRetorno.isEmpty()){
+        if (clienteRetorno.isEmpty()) {
             throw new ClienteNotFoundException("Cliente não encontrado.");
         }
         clienteRepository.deleteById(id);

@@ -14,17 +14,15 @@ public class AgenciaService {
     @Autowired
     AgenciaRepository agenciaRepository;
 
-    public Agencia getAgenciaById(long id)
-    {
+    public Agencia getAgenciaById(long id) {
         var agenciaRetorno = agenciaRepository.findById(id);
-        if(agenciaRetorno.isEmpty()){
+        if (agenciaRetorno.isEmpty()) {
             throw new AgenciaNotFoundException("Agência não encontrada.");
         }
         return agenciaRetorno.get();
     }
 
-    public List<Agencia> getAgencia()
-    {
+    public List<Agencia> getAgencia() {
         List<Agencia> agencias = new ArrayList<Agencia>();
         agenciaRepository.findAll().forEach(agencia -> agencias.add(agencia));
         return agencias;

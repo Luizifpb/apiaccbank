@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>ACC BANK</title>
-    <link rel="icon" href="https://i.imgur.com/OCALdL6.png">
-    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"  rel="stylesheet" />
-    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"  rel="stylesheet" />
-    <link th:href="@{/webjars/font-awesome/css/font-awesome.min.css}"  rel="stylesheet" />
-    <link th:href="@{/css/estilo.css}" rel="stylesheet" />
+    <link href="https://i.imgur.com/OCALdL6.png" rel="icon">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
 
     <style>
         table {
@@ -56,42 +56,14 @@
             background-color: #a626a6;
             cursor: pointer;
         }
+
     </style>
 
 </head>
 <body>
 <nav class="teste navbar navbar-default navbar-fixed-top">
-    <div class="container" align="center">
-<!--        <div class="navbar-header">-->
-<!--            <button type="button" class="navbar-toggle collapsed"-->
-<!--                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"-->
-<!--                    aria-controls="navbar">-->
-<!--                <span class="sr-only">Toggle navigation</span> <span-->
-<!--                    class="icon-bar"></span> <span class="icon-bar"></span> <span-->
-<!--                    class="icon-bar"></span>-->
-<!--            </button>-->
-<!--        </div>-->
-        <img src="https://i.imgur.com/tbDxJpK.png" width="70px" align="center" style="padding-top: 2px">
-<!--        <div id="navbar" class="collapse navbar-collapse">-->
-<!--            <ul class="nav navbar-nav navbar-right">-->
-<!--                <li class="dropdown">-->
-<!--                    <a href="#" class="dropdown-toggle"-->
-<!--                       data-toggle="dropdown" role="button" aria-haspopup="true"-->
-<!--                       aria-expanded="false">-->
-<!--                        Menu-->
-<!--                        <span class="caret"></span>-->
-<!--                    </a>-->
-
-<!--                    <ul class="dropdown-menu">-->
-<!--                        <li><a href="#">Saque</a></li>-->
-<!--                        <li><a href="#">Depósito</a></li>-->
-<!--                        <li><a href="#">Transferência Conta Corrente ACC Bank</a></li>-->
-<!--                        <li><a href="#">Transferência Poupanca ACC Bank</a></li>-->
-<!--                        <li><a href="#">Transferência conta outro banco</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
+    <div align="center" class="container">
+        <img align="center" src="https://i.imgur.com/tbDxJpK.png" style="padding-top: 1px" width="100px">
     </div>
 </nav>
 
@@ -108,18 +80,6 @@
         <h7>Extrato</h7>
         <h4>Conta Corrente</h4>
     </div>
-
-<!--    <b>Sacar:</b> <input type="number" name="saque" />-->
-<!--    <input type="submit" value="Enviar" /><br/><br/>-->
-<!--    <b>Depositar:</b> <input type="number" name="deposito" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta Corrente:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta Poupança:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta de outro banco:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-
     <table class="table table-striped">
         <thead>
         <tr>
@@ -144,18 +104,6 @@
         <h7>Extrato</h7>
         <h4>Conta Poupança</h4>
     </div>
-
-<!--    <b>Sacar:</b> <input type="number" name="saque" />-->
-<!--    <input type="submit" value="Enviar" /><br/><br/>-->
-<!--    <b>Depositar:</b> <input type="number" name="deposito" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta Poupança:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta Corrente:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-<!--    <b>Transferir para uma Conta de outro banco:</b> <input type="number" name="transferencia" />-->
-<!--    <input type="submit" value="Enviar" /><br /><br/>-->
-
     <table class="table table-striped">
         <thead>
         <tr>

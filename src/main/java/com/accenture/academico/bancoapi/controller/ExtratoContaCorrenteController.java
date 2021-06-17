@@ -21,18 +21,16 @@ public class ExtratoContaCorrenteController {
     ExtratoContaCorrenteService extratoContaCorrenteService;
 
     @GetMapping("/extratocontacorrente")
-    public ResponseEntity<List<ExtratoContaCorrente>> getAllExtrato()
-    {
+    public ResponseEntity<List<ExtratoContaCorrente>> getAllExtrato() {
         return new ResponseEntity<>(extratoContaCorrenteService.getAllExtrato(), HttpStatus.OK);
     }
 
     @GetMapping("/extratocontacorrente/{id}")
-    public ResponseEntity<List<ExtratoContaCorrente>> getAllExtratoPorContaCorrente(@PathVariable("id") long id)
-    {
-        try{
+    public ResponseEntity<List<ExtratoContaCorrente>> getAllExtratoPorContaCorrente(@PathVariable("id") long id) {
+        try {
             var extratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
             return new ResponseEntity<>(extratoContaCorrente, HttpStatus.OK);
-        } catch (ContaCorrenteNotFoundException e){
+        } catch (ContaCorrenteNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorModel("Campo Inválido"), HttpStatus.NOT_FOUND);

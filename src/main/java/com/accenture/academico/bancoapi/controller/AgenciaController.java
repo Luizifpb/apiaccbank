@@ -14,17 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AgenciaController {
-        @Autowired
-        AgenciaService agenciaService;
+    @Autowired
+    AgenciaService agenciaService;
 
-        @GetMapping("/agencia")
-        public ResponseEntity<Agencia> getAgencia()
-        {
-                try{
-                        var agencia = agenciaService.getAgenciaById(1L);
-                        return new ResponseEntity(agencia, HttpStatus.OK);
-                } catch (AgenciaNotFoundException e){
-                        return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
-                }
+    @GetMapping("/agencia")
+    public ResponseEntity<Agencia> getAgencia() {
+        try {
+            var agencia = agenciaService.getAgenciaById(1L);
+            return new ResponseEntity(agencia, HttpStatus.OK);
+        } catch (AgenciaNotFoundException e) {
+            return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
         }
+    }
 }

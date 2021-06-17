@@ -61,7 +61,6 @@ public class IndexController {
         } catch (Exception e) {
             e.getMessage();
         }
-
         return modelAndView;
     }
 }

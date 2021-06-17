@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonSerialize
 public class ErrorModel {
-   private String msgError;
+    private String msgError;
 }

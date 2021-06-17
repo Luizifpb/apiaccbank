@@ -15,8 +15,7 @@ public class ExtratoContaPoupancaService {
     @Autowired
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
 
-    public List<ExtratoContaPoupanca> getAllExtrato()
-    {
+    public List<ExtratoContaPoupanca> getAllExtrato() {
         List<ExtratoContaPoupanca> extratoContaPoupanca = new ArrayList<ExtratoContaPoupanca>();
         extratoContaPoupancaRepository.findAll().forEach(extrato -> extratoContaPoupanca.add(extrato));
         return extratoContaPoupanca;
