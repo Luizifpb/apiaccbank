@@ -52,10 +52,10 @@ public class SwaggerConfig {
 
         ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
-        apiInfoBuilder.title("ACC Bank - API");
-        apiInfoBuilder.description("API ACC ");
+        apiInfoBuilder.title("ACC BANK - API");
+        apiInfoBuilder.description("API BANK ACC");
         apiInfoBuilder.version("1.0");
-        apiInfoBuilder.termsOfServiceUrl("Termo de uso: ACC Bank");
+        apiInfoBuilder.termsOfServiceUrl("Termo de uso: ACC BANK");
         apiInfoBuilder.license("Licença - Accenture Academy");
         apiInfoBuilder.licenseUrl("https://accenture.com/");
 
