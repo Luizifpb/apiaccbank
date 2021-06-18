@@ -134,6 +134,10 @@ public class ContaCorrenteService {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
+        }
+
         // pegar saldo das contas
         var contaCorrenteInicialSaldo = contaCorrenteCIOptional.get().getContaCorrenteSaldo();
         var contaCorrenteDestinoSaldo = contaCorrenteCDOptional.get().getContaCorrenteSaldo();
@@ -164,6 +168,10 @@ public class ContaCorrenteService {
             throw new ContaCorrenteNotFoundException("Conta Corrente não encontrada.");
         }
 
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
+        }
+
         // pegar saldo da conta
         var contaCorrenteInicialSaldo = contaCorrenteRepository.findById(idCCI).get().getContaCorrenteSaldo();
 
@@ -187,6 +195,10 @@ public class ContaCorrenteService {
         var contaPoupancaCDOptional = contaPoupancaRepository.findById(idCPD);
         if (contaCorrenteCIOptional.isEmpty() || contaPoupancaCDOptional.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Conta não encontrada.");
+        }
+
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
         }
 
         // pegar saldo das contas

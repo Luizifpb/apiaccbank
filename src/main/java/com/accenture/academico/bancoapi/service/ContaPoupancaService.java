@@ -138,6 +138,10 @@ public class ContaPoupancaService {
             throw new ContaPoupancaNotFoundException("Conta Poupança não encontrada.");
         }
 
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
+        }
+
         // pegar saldo das contas
         var contaPoupancaInicialSaldo = contaPoupancaCIOptional.get().getContaPoupancaSaldo();
         var contaPoupancaDestinoSaldo = contaPoupancaCDOptional.get().getContaPoupancaSaldo();
@@ -168,6 +172,10 @@ public class ContaPoupancaService {
             throw new ContaPoupancaNotFoundException("Conta Poupança não encontrada.");
         }
 
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
+        }
+
         // pegar saldo da conta
         var contaPoupancaInicialSaldo = contaPoupancaRepository.findById(idCPI).get().getContaPoupancaSaldo();
 
@@ -191,6 +199,10 @@ public class ContaPoupancaService {
         var contaCorrenteCDOptional = contaCorrenteRepository.findById(idCCD);
         if (contaPoupancaCIOptional.isEmpty() || contaCorrenteCDOptional.isEmpty()) {
             throw new ContaPoupancaNotFoundException("Conta não encontrada.");
+        }
+
+        if (valorTransferencia <= 0) {
+            throw new ContaCorrenteNotFoundException("Valor inválido.");
         }
 
         // pegar saldo das contas
