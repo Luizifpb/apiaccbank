@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ExtratoContaCorrenteService {
     @Autowired
     ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
+    @Autowired
+    ClienteService clienteService;
+    @Autowired
+    ContaCorrenteService contaCorrenteService;
 
     public List<ExtratoContaCorrente> getAllExtrato() {
         List<ExtratoContaCorrente> extratoContaCorrente = new ArrayList<ExtratoContaCorrente>();
@@ -22,10 +25,9 @@ public class ExtratoContaCorrenteService {
     }
 
     public List<ExtratoContaCorrente> getAllExtratoPorCliente(long id) throws ContaCorrenteNotFoundException {
-        var extratoContaCorrenteId = getAllExtrato()
-                .stream()
-                .filter(extrato -> extrato.getContaCorrente().getCliente().getId() == id)
-                .collect(Collectors.toList());
+        var cliente = clienteService.getClienteById(id);
+        var contaCorrente = contaCorrenteService.getContaCorrenteByCliente(cliente);
+        var extratoContaCorrenteId = extratoContaCorrenteRepository.findByContaCorrente(contaCorrente);
 
         if (extratoContaCorrenteId.isEmpty()) {
             throw new ContaCorrenteNotFoundException("Extrato vazio.");

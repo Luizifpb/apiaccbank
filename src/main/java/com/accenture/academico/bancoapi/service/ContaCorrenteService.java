@@ -30,8 +30,6 @@ public class ContaCorrenteService {
     @Autowired
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
     @Autowired
-    ContaCorrenteService contaCorrenteService;
-    @Autowired
     ExtratoContaCorrenteService extratoContaCorrenteService;
 
     public List<ContaCorrente> getAllContasCorrentes() {
@@ -224,7 +222,7 @@ public class ContaCorrenteService {
     }
 
     public String recalcularSaldoContaCorrente(long id) {
-        var saldoAtual = contaCorrenteService.getSaldoContaCorrenteByIdCliente(id);
+        var saldoAtual = this.getSaldoContaCorrenteByIdCliente(id);
         var listaExtratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorCliente(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
@@ -253,10 +251,14 @@ public class ContaCorrenteService {
         if (valorTotalExtrato == saldoAtual) {
             return "O saldo está correto.";
         } else {
-            contaCorrenteService.getContaCorrenteById(contaId).setContaCorrenteSaldo(valorTotalExtrato);
+            this.getContaCorrenteById(contaId).setContaCorrenteSaldo(valorTotalExtrato);
             contaCorrenteRepository.save(getContaCorrenteByIdCliente);
             return "O seu saldo foi atualizado.";
         }
+    }
+
+    public ContaCorrente getContaCorrenteByCliente(Cliente cliente) {
+        return contaCorrenteRepository.findByCliente(cliente);
     }
 
     public void operacaoContaCorrente(long id, double resultadoOperacao, double valorOperacao, String operacao) {
@@ -290,7 +292,7 @@ public class ContaCorrenteService {
     }
 
     public String gerarNumeroContaCorrente() {
-        var size = contaCorrenteService.getAllContasCorrentes().size();
+        var size = this.getAllContasCorrentes().size();
         int numero = size + 1;
         var numeroContaCorrente = Integer.toString(numero);
         return numeroContaCorrente;

@@ -10,7 +10,6 @@ import com.accenture.academico.bancoapi.exception.ContaPoupancaNotFoundException
 import com.accenture.academico.bancoapi.model.ContaPoupancaModel;
 import com.accenture.academico.bancoapi.repository.ContaCorrenteRepository;
 import com.accenture.academico.bancoapi.repository.ContaPoupancaRepository;
-import com.accenture.academico.bancoapi.repository.ExtratoContaCorrenteRepository;
 import com.accenture.academico.bancoapi.repository.ExtratoContaPoupancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,7 @@ public class ContaPoupancaService {
     @Autowired
     ContaCorrenteRepository contaCorrenteRepository;
     @Autowired
-    ExtratoContaCorrenteRepository extratoContaCorrenteRepository;
-    @Autowired
     ExtratoContaPoupancaRepository extratoContaPoupancaRepository;
-    @Autowired
-    ContaPoupancaService contaPoupancaService;
     @Autowired
     ExtratoContaPoupancaService extratoContaPoupancaService;
 
@@ -228,7 +223,7 @@ public class ContaPoupancaService {
     }
 
     public String recalcularSaldoContaPoupanca(long id) {
-        var saldoAtual = contaPoupancaService.getSaldoContaPoupancaByIdCliente(id);
+        var saldoAtual = this.getSaldoContaPoupancaByIdCliente(id);
         var listaExtratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorCliente(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
@@ -257,10 +252,14 @@ public class ContaPoupancaService {
         if (valorTotalExtrato == saldoAtual) {
             return "O saldo está correto.";
         } else {
-            contaPoupancaService.getContaPoupancaById(contaId).setContaPoupancaSaldo(valorTotalExtrato);
+            this.getContaPoupancaById(contaId).setContaPoupancaSaldo(valorTotalExtrato);
             contaPoupancaRepository.save(getContaPoupancaByIdCliente);
             return "O seu saldo foi atualizado.";
         }
+    }
+
+    public ContaPoupanca getContaPoupancaByCliente(Cliente cliente) {
+        return contaPoupancaRepository.findByCliente(cliente);
     }
 
     public void operacaoContaPoupanca(long id, double resultadoOperacao, double valorOperacao, String operacao) {
@@ -294,7 +293,7 @@ public class ContaPoupancaService {
     }
 
     public String gerarNumeroContaPoupanca() {
-        var size = contaPoupancaService.getAllContasPoupancas().size();
+        var size = this.getAllContasPoupancas().size();
         int numero = size + 1;
         var numeroContaPoupanca = Integer.toString(numero);
         return numeroContaPoupanca;
