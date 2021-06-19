@@ -229,7 +229,7 @@ public class ContaPoupancaService {
 
     public String recalcularSaldoContaPoupanca(long id) {
         var saldoAtual = contaPoupancaService.getSaldoContaPoupancaByIdCliente(id);
-        var listaExtratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
+        var listaExtratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorCliente(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
         double valorTotalExtrato = 0;

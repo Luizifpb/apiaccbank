@@ -21,7 +21,7 @@ public class ExtratoContaCorrenteService {
         return extratoContaCorrente;
     }
 
-    public List<ExtratoContaCorrente> getAllExtratoPorContaCorrente(long id) throws ContaCorrenteNotFoundException {
+    public List<ExtratoContaCorrente> getAllExtratoPorCliente(long id) throws ContaCorrenteNotFoundException {
         var extratoContaCorrenteId = getAllExtrato()
                 .stream()
                 .filter(extrato -> extrato.getContaCorrente().getCliente().getId() == id)

@@ -225,7 +225,7 @@ public class ContaCorrenteService {
 
     public String recalcularSaldoContaCorrente(long id) {
         var saldoAtual = contaCorrenteService.getSaldoContaCorrenteByIdCliente(id);
-        var listaExtratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+        var listaExtratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorCliente(id);
 
         double valorSaques = 0, valorDepositos = 0, valorTransferenciasRealizadas = 0, valorTransferenciasRecebidas = 0;
         double valorTotalExtrato = 0;

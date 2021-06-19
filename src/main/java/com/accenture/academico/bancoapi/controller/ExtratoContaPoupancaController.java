@@ -28,7 +28,7 @@ public class ExtratoContaPoupancaController {
     @GetMapping("/extratocontapoupanca/{id}")
     public ResponseEntity<List<ExtratoContaPoupanca>> getAllExtratoPorContaPoupanca(@PathVariable("id") long id) {
         try {
-            var extratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
+            var extratoContaPoupanca = extratoContaPoupancaService.getAllExtratoPorCliente(id);
             return new ResponseEntity<>(extratoContaPoupanca, HttpStatus.OK);
         } catch (ContaPoupancaNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);

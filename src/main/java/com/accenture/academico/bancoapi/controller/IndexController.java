@@ -32,13 +32,13 @@ public class IndexController {
 
         ModelAndView modelAndView = new ModelAndView("indexcliente");
         try {
-            List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+            List<ExtratoContaCorrente> lista = extratoContaCorrenteService.getAllExtratoPorCliente(id);
             modelAndView.addObject("listarextratocontacorrente", lista);
         } catch (Exception e) {
             e.getMessage();
         }
         try {
-            List<ExtratoContaPoupanca> lista2 = extratoContaPoupancaService.getAllExtratoPorContaPoupanca(id);
+            List<ExtratoContaPoupanca> lista2 = extratoContaPoupancaService.getAllExtratoPorCliente(id);
             modelAndView.addObject("listarextratocontapoupanca", lista2);
         } catch (Exception e) {
             e.getMessage();

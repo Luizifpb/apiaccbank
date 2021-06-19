@@ -28,7 +28,7 @@ public class ExtratoContaCorrenteController {
     @GetMapping("/extratocontacorrente/{id}")
     public ResponseEntity<List<ExtratoContaCorrente>> getAllExtratoPorContaCorrente(@PathVariable("id") long id) {
         try {
-            var extratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorContaCorrente(id);
+            var extratoContaCorrente = extratoContaCorrenteService.getAllExtratoPorCliente(id);
             return new ResponseEntity<>(extratoContaCorrente, HttpStatus.OK);
         } catch (ContaCorrenteNotFoundException e) {
             return new ResponseEntity(new ErrorModel(e.getMessage()), HttpStatus.NOT_FOUND);
